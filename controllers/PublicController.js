@@ -1,16 +1,35 @@
+//MongoDB conncetions
 const { connect } = require('mongoose');
 const { ObjectId } = require('mongodb');
+
+//Routes to allow for more organized redirection, etc.
 const app = require('../routes/routes.js');
+
+//This file contains the database functions (Ex: Search, Adding entry, etc.)
 const db = require('../models/db.js');
+
+//Path
 const path = require('path');
+
+//Model Schemas
 const account = require('../models/Accounts.js');
 const request = require('../models/Requests.js');
+
+//Nodemailer Utility for Email Password Recovery
 const email = require('../util/nodemailer.js')
+
+//I won't lie, I have no idea what these are for, hahaha
 const { totalmem } = require('os');
 const { localsAsTemplateData } = require('hbs');
 
+
+
 const PublicController = {
+
+    //This renders the home page
     getIndex: async function(req, res) {
+
+        //This creates a HOST account if there is none. This is so there will never be a time when a HOST account doesn't exist.
         db.findOne(account, {username: 'HOST', host: true}, {}, (result) => {
             if (result) {
                 res.render('login');
@@ -30,11 +49,18 @@ const PublicController = {
         
     },
 
+
+    //Login function
     loginUser: async function(req, res) {
+
+        //Gets the values entered
         var user = req.body.name;
         var pass = req.body.pass;
         
+        //Finds the username entered in the db, checks the password entered if it matches the one in the DB, then logs the user in if they match.
         db.findOne(account, {username: user}, {}, (result) => {
+
+            //THIS IS WHERE WE'RE GONNA ADD THE PASSWORD ENCRPYTION FUNCTIOn
             if (result) {
                 console.log(result);
                 if(result.password == pass) {
@@ -63,7 +89,10 @@ const PublicController = {
         })        
     },
 
+    //Registers a new user
     registerUser: async function(req, res) {
+
+        //Gets the values entered
         newaccount = {
             fname: req.body.fname.trim(),
             lname: req.body.lname.trim(),
@@ -72,8 +101,11 @@ const PublicController = {
             con: req.body.contact.trim(),
             email: req.body.email.trim()
         }
-        console.log(req.body)
+
+        //DB function looks for a matching username, contact number and or email...
         db.findOne(account, { $or: [{username: newaccount.user}, {contact: newaccount.con}, {email: newaccount.email}]}, {}, (result) => {
+
+            //If found, account creation is stopped.
             if (result) {
                 console.log(result);
                 if (result.username == newaccount.user)
@@ -84,14 +116,20 @@ const PublicController = {
                     req.flash('error_msg', 'This email is already registered.');
                 res.redirect('/register');
             }
-            else {
+            else { //Else, we proceed with the next step in creating an account
                 console.log("RENDER")
+
+                //This redirects to the page where a user can select their security questions for their account recovery.
                 res.render('register1', newaccount);
             }
         })  
     },
 
+
+    //Next step in account creation.
     getQuestion1: async function(req, res) {
+
+        //Carrying over the variables from the last step.
         var newaccount = {
             fname: req.body.fname,
             lname: req.body.lname,
@@ -107,6 +145,8 @@ const PublicController = {
         
         var questions = []
         count = 0;
+
+        //This takes the questions selected by the user and stores them into an object. This is to help the parsing and storing of the answers of the security questions in the coming steps
         req.body.question.forEach(element => {
             
             var temp = {
@@ -120,13 +160,18 @@ const PublicController = {
             count++;
         });
         newaccount.questions = questions
+
+        //Goes to the next step of the account creation.
         res.render('question1', newaccount);
     },
 
+
+    //Next step in account creation. Here, the function stores the answer of the user's first security question.
     getQuestion2: async function(req, res) {
         //Assign answer to first question, then render the next question
         assign = 0;
 
+        //Carrying over the variables from the previous step.
         var newaccount = {
             fname: req.body.fname,
             lname: req.body.lname,
@@ -149,23 +194,24 @@ const PublicController = {
             temp.question = element;
             temp.pos = count;
             if(temp.pos == assign)
-                temp.answer = req.body.answer
+                temp.answer = req.body.answer //Stores answer to the index of the object array corresponding to the question answered. See the assign variable at the start of the function.
             questions.push(temp)
             count++;
         });
         count = 0;
 
         newaccount.questions = questions
-        console.log(assign)
-        console.log(newaccount)
+
+        //After storing the answer to the first question, we proceed to the next step.
         res.render('question2', newaccount);
     },
 
+    //Next step.
     getQuestion3: async function(req, res) {
        //Assign answer to second question, then render the next question
         assign = 1;
-        console.log(assign)
-        console.log(req.body.answers)
+
+        //Same as previously, storing variables.
         newaccount = {
             fname: req.body.fname,
             lname: req.body.lname,
@@ -188,7 +234,7 @@ const PublicController = {
             temp.question = element;
             temp.pos = count;
             if(temp.pos == assign)
-                temp.answer = req.body.answer
+                temp.answer = req.body.answer  //Storing answer...
             questions.push(temp)
             count++;
         });
@@ -199,13 +245,17 @@ const PublicController = {
             count++;
         });
         newaccount.questions = questions
-        console.log(newaccount)
+
+        //Next step.
         res.render('question3', newaccount);
     },
 
+    //Next step.
     checkforQuestion4: async function(req, res) {
         //Assign answer to third question, then render the next question (if there is one)
          assign = 2;
+
+         //Storing variables.
          newaccount = {
             fname: req.body.fname,
             lname: req.body.lname,
@@ -228,7 +278,7 @@ const PublicController = {
              temp.question = element;
              temp.pos = count;
              if(temp.pos == assign)
-                 temp.answer = req.body.answer
+                 temp.answer = req.body.answer //Storing answer
              questions.push(temp)
              count++;
          });
@@ -239,11 +289,12 @@ const PublicController = {
              count++;
          });
          newaccount.questions = questions
-         console.log("Testinagina")
-         console.log(newaccount)
-         if(req.body.question3flag)
-            res.render('question4', newaccount);
+
+         if(req.body.question3flag) //This is a flag sent by the page (see the question handlebars), that lets the function know whether there is a fourth question (A user can pick 3-4 questions)
+            res.render('question4', newaccount); //If there is a question, there is one final step that stores the answer to the fourth and final question.
          else {
+
+            //Else the account is created.
             create = await account.create(newaccount);
             
             var user = newaccount.username;
@@ -251,6 +302,7 @@ const PublicController = {
 
             console.log(user);
             
+            //Auto login after account creation
             db.findOne(account, {username: user}, {}, (result) => {
                 if (result) {
                     console.log(result);
@@ -281,6 +333,7 @@ const PublicController = {
          }
      },
 
+     //Final step for users with four security questions
      registerUser2: async function(req, res) {
         //Assign answer to third question, then render the next question (if there is one)
         assign = 3;
@@ -318,8 +371,8 @@ const PublicController = {
             count++;
         });
         newaccount.questions = questions
-        console.log("Testinagina")
-        console.log(newaccount)  
+
+        //Account is created
         create = await account.create(newaccount);
         
         console.log(create);
@@ -329,6 +382,7 @@ const PublicController = {
 
         console.log(user);
         
+        //Auto login after account creation
         db.findOne(account, {username: user}, {}, (result) => {
             if (result) {
                 console.log(result);
@@ -398,9 +452,14 @@ const PublicController = {
          console.log(newaccount)       
     },*/
 
+    //Email recovery
     sendEmail: async function(req, res) {
+
+        //Finds the account in question, gets the information from the database and sends an email with the corresponding credentials.
         db.findOne(account, {_id: req.body.userid}, {}, (result) => {
             console.log(result.email);
+
+            //Nodemailer sends emails in HTML format, so the email is written like it. This is just an HTML style piece of text that we then send using nodemailer.
             html1 = 'Hello! These are your account credentials: <br><br>' + 
                     '<b>User: </b>' + result.username + 
                     '<br><b>Password:</b> ' + result.password;
@@ -413,6 +472,7 @@ const PublicController = {
                 html2 = html2 + '<br><br><b>Question 4: </b>' + result.questions[3].question + ' <br><b>Answer: </b>' + result.questions[3].answer
             }
 
+            //Setting up the required variables for nodemailer.
             mail = {
                 from: 'team_autoworks@hotmail.com',
                 to: result.email,
@@ -420,12 +480,15 @@ const PublicController = {
                 html: html1 + html2
             }
 
+            //This email function is defined in /util/nodemailer.js!
             email(mail);
 
             res.redirect('/emailfinish')
         })
     },
 
+
+    //The following variables kinda just render hbs.
     emailDone: async function(req, res) {
         res.render('emailed')
     },
@@ -443,9 +506,13 @@ const PublicController = {
         res.render('forgotpass');
     },
 
+
+    //Password recovery.
     chooseRecovery: async function(req, res) {
         db.findOne(account, { $or: [{username: req.body.user}, {email: req.body.user}]}, {}, (result) => {
             console.log(result)
+
+            //Password recovery requires a username or email. If no valid ones are entered, the user is redirected back to the first step of recovery.
             if (!result) {
                 req.flash('error_msg2', 'Please enter a valid username or email!');
                 res.redirect('/forgot')
@@ -456,6 +523,7 @@ const PublicController = {
         });
     },
 
+    //Renders first question, gets the answer and renders second question.
     getAnswer1: async function(req, res) {
         //Answer question 1
         db.findOne(account, {_id: req.body.userid}, {}, (result) => {
@@ -465,6 +533,11 @@ const PublicController = {
         });
     },
 
+
+    //First question and first answer entered are checked. If the answer is right, then the boolean for that question is set to true.
+    //The way the logic works is that there is a boolean array for each user security question that stores whether or not the user got it correct or not.
+    //At the end of all the questions, there will be a function that checks whether or not the user got all the questions correct. The credentials are given if they're all correct
+    //Else, the user is informed that they got something wrong, then they're given a choice to redirect back to the home page.
     getAnswer2: async function(req, res) {
         //Check Question 1 -> Add Boolean if Correct -> Render Question 2 Regardless
         assign = 0;

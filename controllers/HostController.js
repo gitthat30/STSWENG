@@ -1,3 +1,4 @@
+//Setting the required stuff. See other controllers, these are repeated!
 const { connect } = require('mongoose');
 const { ObjectId } = require('mongodb');
 const app = require('../routes/routes.js');
@@ -8,6 +9,8 @@ const request = require('../models/Requests.js');
 const { totalmem } = require('os');
 
 const HostController = {
+
+    //Get host home page
     getHost: async function(req, res) {
         console.log(req.session.name);
 
@@ -27,11 +30,14 @@ const HostController = {
         })
     },
 
+    //Show pending requests by users.
     getPendingRequests: async function(req, res) {
         var requests = await request.find({status: 'Pending'});
         res.render('./onSession/hpendingrequests', {req: requests.reverse(), isHost: true, username: req.session.name});
     },
 
+
+    //Renders a specific request. Sames as the one in the UserController, but this one contains functions that only the HOST has access to. (See the hbs it renders and compare it to the user's for more info!)
     viewRequest: async function(req, res) {
         if(!req.body.reqid)
             console.log("ASFIONASOFN")
@@ -61,6 +67,8 @@ const HostController = {
         })     
     },
 
+
+    //Assigns a quotation to a specific request.
     sendQuotation: async function(req, res) {
         var today = new Date();
         var dd = today.getDate();
@@ -88,7 +96,7 @@ const HostController = {
                         messages: result.messages
                     };
                     
-                    var notification = { //Create notification for a sent message
+                    var notification = { //Create notification 
                         message: "User \"" + req.session.name + "\" sent quotation on order on car: \"" + result.car + "\"",
                         read: false,
                         sentdate: today,
@@ -110,6 +118,7 @@ const HostController = {
         });
     },
 
+    //Adds an amount to the balance of a request.
     addPaidBalance: async function(req, res) {
         var amountPaid = req.body.amount;
         db.updateOne(request, {_id: req.body.reqid}, {$inc: {paid: amountPaid, outstanding: (-1 * amountPaid)}}, (result) => {
@@ -117,6 +126,7 @@ const HostController = {
         });
     },
 
+    //When a request is fully paid, the host can then settle the request, marking it as a finished transaction.
     settleRequest: async function(req, res) {
         var today = new Date();
         var dd = today.getDate();
@@ -130,18 +140,21 @@ const HostController = {
         });
     },
 
+    
     editOutstanding: function(req, res) {
         db.updateOne(request, {_id: req.body.reqid}, {outstanding: req.body.editedOutstanding}, (result) => {
             console.log("Edited oustanding balance of " + req.body.reqid + " to " + req.body.editedOutstanding);
             res.redirect('/hviewactive');
         });
     },
-
+    
+    //View active requests sent by users.
     viewActiveRequests: async function(req, res) {
         var requests = await request.find({status: 'Accepted'});
         res.render('./onSession/hactiverequests', {req: requests.reverse(), isHost: true, username: req.session.name});
     },
 
+    //Manually addes a job. This is a function requested by the customer for onsite transactions.
     viewAddNewJob: function(req, res) {
         res.render('./onSession/hnewjob', {isHost: true, username: req.session.name});
     },
@@ -175,6 +188,7 @@ const HostController = {
         })
     },
 
+    //Renders the finanacial report page.
     viewGenerateReport: async function(req, res) {
         var today = new Date();
         var yyyy = today.getFullYear();
@@ -182,6 +196,7 @@ const HostController = {
         res.render('./onSession/hreport', {date: yyyy+'-'+mm, isHost: true, username: req.session.name});
     },
 
+    //Generates a financial report based on the dates entered by the user.
     generateReport: async function(req, res) {
         var requests = await request.find();
         var starty = parseInt(req.query.start.substring(0,4));
@@ -230,6 +245,8 @@ const HostController = {
         res.render('./onSession/hsuppliers', {isHost: true, username: req.session.name});
     },
 
+
+    //Delete a request. Notifies the user as a notification after this is done.
     hostDeleteRequest: async function(req, res) {
         console.log("Here")
         //Getting Date
@@ -259,7 +276,7 @@ const HostController = {
             
         });
     },
-
+    
     viewNotifications: async function(req, res) {
         db.findOne(account, {_id: req.session.user}, {}, function(result) {
             read = [];

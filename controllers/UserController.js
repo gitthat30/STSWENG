@@ -1,16 +1,31 @@
+
+//MongoDB conncetions
 const { connect } = require('mongoose');
 const { ObjectId, GridFSBucketReadStream } = require('mongodb');
+
+//Cloudinary Utility. This is our Content Delivery Network
 const cloudinary = require('../util/cloudinary')
+
+//Routes to allow for more organized redirection, etc.
 const app = require('../routes/routes.js');
+
+//This file contains the database functions (Ex: Search, Adding entry, etc.)
 const db = require('../models/db.js');
+
+//Path
 const path = require('path');
 const fs = require('fs');
 const http = require('http');
+
+//Model Schemas
 const account = require('../models/Accounts.js');
 const request = require('../models/Requests.js');
+
 const { totalmem } = require('os');
 
 const UserController = {
+    
+    //Renders the user home page. If the user is a HOST account, it redirects to the HOST home page.
     getUser: async function(req, res) {
         console.log(req.session.name);
         notifcount = 0
@@ -27,9 +42,12 @@ const UserController = {
         }
     },
 
+
+    //Logout
     logoutUser: function(req, res) {
         // Destroy the session and redirect to login page
           if (req.session) {
+            //Ends the session
             req.session.destroy(() => {
               res.clearCookie('connect.sid');
               res.redirect('/');
@@ -37,7 +55,10 @@ const UserController = {
           }
     },
 
+    //Sending message within requests.
     sendMessage: async function(req, res) {
+
+        //Parsing date
         var today = new Date();
         var dd = today.getDate();
         var mm = today.getMonth() + 1;
@@ -46,6 +67,7 @@ const UserController = {
         var min = today.getMinutes();
         today = yyyy+'-'+mm+'-'+dd +' ('+hr+':'+min+')';
 
+        //Stores the username that sent the message and date.
         var message = {
             username: req.session.name,
             sentdate: today
@@ -57,6 +79,7 @@ const UserController = {
             message.content = req.body.content.trim();
             console.log(message);
             db.updateOne(request, {_id: req.body.reqid}, {$push: {messages: message}}, function(result) {
+
                 //Start of Notification Code
                 db.findOne(request, {_id: req.body.reqid}, {}, function(result) { //Find the request in DB to get vars
                     var notification = { //Create notification for a sent message
@@ -86,11 +109,14 @@ const UserController = {
         else {
             console.log('Sending message as attachment.');
             var {file} = req.files;
+
             var filePath = path.resolve(__dirname,'../public/UPLOADED', file.name);
 
             console.log(filePath);
 
+            //The attached file is first moved to the UPLOADED folder.
             file.mv(filePath, (error) => {
+                //This is cloudinary code that takes that file and uploads it to our cloudinary account
                 console.log("File in filesystem");
                 cloudinary.uploader.upload(filePath, {
                     resource_type: "raw",
@@ -100,7 +126,10 @@ const UserController = {
                     message.content = file.public_id;
                     message.url = file.url;
 
+                    //After the upload
                     console.log(message);
+
+                    //Make a notification about the message, send it as a notification to the people in question.
                     db.updateOne(request, {_id: req.body.reqid}, {$push: {messages: message}}, function() {
                         db.findOne(request, {_id: req.body.reqid}, {}, function(result) {
                             var notification = {
@@ -129,6 +158,8 @@ const UserController = {
         }
     },
 
+
+    //Downloads attachment
     download: async function(req, res) {
         var img_url = req.body.img_url;
         var img_name = req.body.img_name;
@@ -147,8 +178,11 @@ const UserController = {
         });
     },
 
+    //Renders the request creation page
     getUserRequestCreation: async function(req, res) {
         notifcount = 0;
+
+        //This db function thing where we get the result.notifications is only there to render the number next to notifications to inform the user how many unread notifications they have.
         db.findOne(account, {_id: req.session.user}, {}, function(result) {
             console.log(typeof result.notifications)
             result.notifications.forEach(n => {
@@ -263,6 +297,7 @@ const UserController = {
         }
     },
     
+    //Gets the user requests and renders them on a page for the user to view.
     getUserRequests: async function(req, res) {
         var requests = await request.find({userid: req.session.user, status: 'Pending'});
         console.log("requests")
@@ -278,6 +313,8 @@ const UserController = {
         })
     },
 
+
+    //Renders a specific user request
     renderUserRequest: async function(req, res) {
         notifcount = 0;
         db.findOne(request, {_id: req.body.reqid}, {}, (result) => {
@@ -313,6 +350,8 @@ const UserController = {
         })   
     },
 
+
+    //Accepts the request with a given quotations by the host.
     acceptRequest: function(req, res) {
         var today = new Date();
         var dd = today.getDate();
@@ -352,6 +391,7 @@ const UserController = {
         
     },
 
+    //Dclines the request.
     declineRequest: function(req, res) {
         //Getting Date
         var today = new Date();
@@ -384,6 +424,8 @@ const UserController = {
         });
     },
 
+
+    //Renders the edit page for a given request.
     getEditRequest: function(req, res) {
         notifcount = 0;
         db.findOne(request, {_id: req.body.reqid}, {}, (result) => {
@@ -402,6 +444,8 @@ const UserController = {
         });
     },
 
+
+    //Commits the changes to the request in the DB
     getEditRequestAction: async function(req, res) {
         //Getting Date
         var today = new Date();
@@ -425,10 +469,10 @@ const UserController = {
 
         image_links = req.body.image_links;
 
+        //If the edited request only has one new image
         if(!Array.isArray(image_links) && req.body.image_links) {
             image_links = [];
             image_links.push(req.body.image_links)
-            console.log("AAA")
         }    
 
         image_ids = req.body.image_ids;
@@ -499,6 +543,8 @@ const UserController = {
                 today = yyyy+'-'+mm+'-'+dd;
 
                 updatedReq.images = []
+
+                //Pushes images that were unchanged in the edit.
                 if(image_links) {
                     console.log("Pushed")
                     counter = 0;
@@ -513,6 +559,8 @@ const UserController = {
                 }
 
                 counter = 0; 
+
+                //Await so the request isn't changed before the images entered have been uploaded properly
                 await new Promise((resolve) => {
                     images.forEach(image => {
                         var filePath = path.resolve(__dirname,'../public/UPLOADED', image.name);
@@ -529,6 +577,8 @@ const UserController = {
                                 console.log("* " + image.public_id);
                                 console.log("* " + image.url);
                                 
+
+                                //Gets the links and ids produced by cloudinary and stores it into the request
                                 temp = {
                                     image_link: String,
                                     image_id: String
@@ -550,6 +600,7 @@ const UserController = {
                     })
                 })
 
+                //Updates the request with the new information entered.
                 db.updateOne(request, {_id: req.body.ogid}, updatedReq, (result) => {
                     db.updateOne(account, {host: true}, {$push: {notifications: notification}}, function(result) {
                         res.redirect("/uviewallpending");
@@ -563,6 +614,7 @@ const UserController = {
         }
     },
 
+    //Renders accepted requests.
     getUserAcceptedRequests: async function(req, res) {
         notifcount = 0;
         var requests = await request.find({userid: req.session.user, $or: [{status: 'Accepted'}, {status: 'Settled'}]});
@@ -582,8 +634,9 @@ const UserController = {
 
             res.render('./onSession/uviewongoing', {req: requests.reverse(), isHost: false, username: req.session.name, fname: req.session.fname, lname: req.session.lname, notifcount}); 
         })
-    },
+    }, 
 
+    //View notifications
     viewNotifications: async function(req, res) {
         notifcount = 0;
         db.findOne(account, {_id: req.session.user}, {}, function(result) {
@@ -602,6 +655,8 @@ const UserController = {
         })
     },
 
+
+    //Contact page.
     viewContact: function(req, res) {
         notifcount = 0;
         db.findOne(account, {_id: req.session.user}, {}, function(result) {
