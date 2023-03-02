@@ -1,9 +1,11 @@
 const bcrypt = require('../util/bcrypt')
 
-test('Function properly encrpyts passwords | Password: "aaa" | After encryption must not be "aaa"', () => {
+test('Function properly encrpyts passwords | Password: "abc" | After encryption must not be "abc"', async () => {
+  password = "abc"
+  hashed = await bcrypt.hash(password)
   expect(
-    bcrypt.hash("a")
-    ).not.toBe("a")
+    bcrypt.hash(hashed)
+    ).not.toBe(password)
 })
 test('Function properly deciphers hashed passwords | Password: "aaa" | Encrpted "aaa" and normal "aaa" are seen as equal using the comparison function', async () => {
   password = "aaa"
