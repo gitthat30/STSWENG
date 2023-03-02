@@ -7,7 +7,7 @@ const app = require('../routes/routes.js');
 
 //This file contains the database functions (Ex: Search, Adding entry, etc.)
 const db = require('../models/db.js');
-
+const bcrypt = require('../util/bcrypt')
 //Path
 const path = require('path');
 
@@ -28,7 +28,6 @@ const PublicController = {
 
     //This renders the home page
     getIndex: async function(req, res) {
-
         //This creates a HOST account if there is none. This is so there will never be a time when a HOST account doesn't exist.
         db.findOne(account, {username: 'HOST', host: true}, {}, (result) => {
             if (result) {
@@ -56,48 +55,51 @@ const PublicController = {
         //Gets the values entered
         var user = req.body.name;
         var pass = req.body.pass;
-        
+
+
         //Finds the username entered in the db, checks the password entered if it matches the one in the DB, then logs the user in if they match.
-        db.findOne(account, {username: user}, {}, (result) => {
+        dbquery = await new Promise((resolve, reject) => {
+            db.findOne(account, {username: user}, {}, (result) => {
+                if (!result)
+                    reject()
+                else
+                    resolve(result)
+            })
+        })
+        test = await new Promise((resolve) => {
+            resolve(bcrypt.compare(pass, dbquery.password));
+        })
+        console.log("hash comparison =", test)
+        if(test) {
+            req.session.user = dbquery._id;
+            req.session.name = dbquery.username;
+            req.session.fname = dbquery.fname;
+            req.session.lname = dbquery.lname;
+            req.session.host = dbquery.host;
+            req.session.contact = dbquery.contact;
+            console.log(req.session);
 
-            //THIS IS WHERE WE'RE GONNA ADD THE PASSWORD ENCRPYTION FUNCTIOn
-            if (result) {
-                console.log(result);
-                if(result.password == pass) {
-                    req.session.user = result._id;
-                    req.session.name = result.username;
-                    req.session.fname = result.fname;
-                    req.session.lname = result.lname;
-                    req.session.host = result.host;
-                    req.session.contact = result.contact;
-                    console.log(req.session);
-
-                    if(result.host)
-                        res.redirect('/hhome');
-                    else 
-                        res.redirect('/home');
-                }
-                else {
-                    req.flash('error_msg', 'Incorrect password.');   
-                    res.redirect('/login');
-                }
-            }
-            else {
-                req.flash('error_msg', 'This user does not exist. Please register.');
-                res.redirect('/login');
-            }
-        })        
+            if(result.host)
+                res.redirect('/hhome');
+            else 
+                res.redirect('/home');
+        }
+        else {
+            req.flash('error_msg', 'Incorrect password.');   
+            res.redirect('/login');
+        }
     },
 
     //Registers a new user
     registerUser: async function(req, res) {
+        encrpyted = await bcrypt.hash(req.body.pass.trim()) //Hashing the password
 
         //Gets the values entered
         newaccount = {
             fname: req.body.fname.trim(),
             lname: req.body.lname.trim(),
             user: req.body.name.trim(),
-            pass: req.body.pass.trim(),
+            pass: encrpyted,
             con: req.body.contact.trim(),
             email: req.body.email.trim()
         }

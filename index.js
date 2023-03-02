@@ -14,7 +14,7 @@ app.use(express.static('public'));
 const session = require(`express-session`);
 const MongoStore = require(`connect-mongo`);
 
-url = 'mongodb+srv://test:asdzxc123@cluster0.n4fbkuj.mongodb.net/carRepair';
+url = 'mongodb+srv://test:asdzxc123@cluster0.n4fbkuj.mongodb.net/carRepairSTSWENG';
 
 app.use(session({
     secret: 'AutoWork',

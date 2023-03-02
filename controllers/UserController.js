@@ -27,7 +27,6 @@ const UserController = {
     
     //Renders the user home page. If the user is a HOST account, it redirects to the HOST home page.
     getUser: async function(req, res) {
-        console.log(req.session.name);
         notifcount = 0
         if(req.session.host)
             res.redirect('/hhome')
