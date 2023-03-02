@@ -5,7 +5,7 @@ test('Function properly encrpyts passwords | Password: "aaa" | After encryption 
     bcrypt.hash("a")
     ).not.toBe("a")
 })
-test('Function properly deciphers hashed passwords | Password: "aaa" | Encrpted "aaa" and normal "aaa" are seen as equal', async () => {
+test('Function properly deciphers hashed passwords | Password: "aaa" | Encrpted "aaa" and normal "aaa" are seen as equal using the comparison function', async () => {
   password = "aaa"
   hashed = await bcrypt.hash("aaa")
   check = await bcrypt.compare(password, hashed)
