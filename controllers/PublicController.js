@@ -28,16 +28,21 @@ const PublicController = {
 
     //This renders the home page
     getIndex: async function(req, res) {
+        
         //This creates a HOST account if there is none. This is so there will never be a time when a HOST account doesn't exist.
-        db.findOne(account, {username: 'HOST', host: true}, {}, (result) => {
+        db.findOne(account, {username: 'HOST', host: true}, {}, async (result) => {
             if (result) {
                 res.render('login');
             }
             else {
+                password = '1234567890'
+
+                hashed = await bcrypt.hash(password)
+
                 console.log(result);
                 newuser = {
                     username: 'HOST',
-                    password: '1234567890',
+                    password: hashed,
                     host: true,
                 }
 
@@ -456,6 +461,12 @@ const PublicController = {
 
     //Email recovery
     sendEmail: async function(req, res) {
+        console.log(req.body.userid)
+        hashed = await bcrypt.hash(req.body.userid)
+
+        db.updateOne(account, {_id: req.body.userid}, {password: hashed}, (result) => {
+            console.log(result)
+        })
 
         //Finds the account in question, gets the information from the database and sends an email with the corresponding credentials.
         db.findOne(account, {_id: req.body.userid}, {}, (result) => {
@@ -464,7 +475,7 @@ const PublicController = {
             //Nodemailer sends emails in HTML format, so the email is written like it. This is just an HTML style piece of text that we then send using nodemailer.
             html1 = 'Hello! These are your account credentials: <br><br>' + 
                     '<b>User: </b>' + result.username + 
-                    '<br><b>Password:</b> ' + result.password;
+                    '<br><b>Password:</b> ' + req.body.userid + ' <br>(Your new password. Please change it as soon as possible!)';
             html2 = '<br><br><b>Security Questions</b><br>' +
                     '<b>Question 1: </b>' + result.questions[0].question + ' <br><b>Answer: </b>' + result.questions[0].answer +
                     '<br><br><b>Question 2: </b>' + result.questions[1].question + ' <br><b>Answer: </b>' + result.questions[1].answer +
@@ -681,9 +692,16 @@ const PublicController = {
                     passed = false;
             });
             if(passed) {
+                console.log(req.body.userid)
+                hashed = await bcrypt.hash(req.body.userid)
+    
+                db.updateOne(account, {_id: req.body.userid}, {password: hashed}, (result) => {
+                    console.log(result)
+                })
+
                 db.findOne(account, {_id: req.body.userid}, {}, (result) => {
                     result.passed = passed;
-                    
+                    result.password = req.body.userid;
                     res.render('passworddisplay', result)
                 })    
             }
@@ -741,8 +759,16 @@ const PublicController = {
                 passed = false;
         });
         if(passed) {
+            console.log(req.body.userid)
+            hashed = await bcrypt.hash(req.body.userid)
+
+            db.updateOne(account, {_id: req.body.userid}, {password: hashed}, (result) => {
+                console.log(result)
+            })
+
             db.findOne(account, {_id: req.body.userid}, {}, (result) => {
                 result.passed = passed;
+                result.password = req.body.userid;
                 
                 res.render('passworddisplay', result)
             })    
