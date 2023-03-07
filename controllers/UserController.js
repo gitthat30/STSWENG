@@ -667,6 +667,18 @@ const UserController = {
             res.render('./onSession/ucontact', {isHost: false, username: req.session.name, fname: req.session.fname, lname: req.session.lname, notifcount});
         })
     },
+
+    viewProfile: async function(req, res) {
+        notifcount = 0
+        db.findOne(account, {_id: req.session.user}, {}, function(result) {
+            console.log(typeof result.notifications)
+            result.notifications.forEach(n => {
+                if(!n.read)
+                    notifcount++;
+            })
+            res.render('./onSession/uviewprofile', {isHost: false, username: req.session.name, fname: req.session.fname, lname: req.session.lname, contact: result.contact, q1: result.questions[0].question, q2: result.questions[1].question, q3: result.questions[2].question, notifcount});
+        })
+    }
 }
 
 module.exports = UserController;

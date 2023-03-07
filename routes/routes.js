@@ -39,6 +39,9 @@ app.get('/logout', isPrivate, UserController.logoutUser);
 app.post("/sendmessage", isPrivate, UserController.sendMessage);
 app.post('/downloadFile', isPrivate, UserController.download);
 
+// [CLIENT] Profile View
+app.get('/viewprofile', isPrivate, UserController.viewProfile);
+
 // [CLIENT] Create Estimation Request
 app.get("/createreq", isPrivate, UserController.getUserRequestCreation);
 app.post("/submitreq", isPrivate, UserController.submitRequest);

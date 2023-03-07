@@ -61,37 +61,49 @@ const PublicController = {
         var user = req.body.name;
         var pass = req.body.pass;
 
-
+        console.log("Here")
         //Finds the username entered in the db, checks the password entered if it matches the one in the DB, then logs the user in if they match.
         dbquery = await new Promise((resolve, reject) => {
-            db.findOne(account, {username: user}, {}, (result) => {
+            db.findOne(account, {username: user}, {}, (error, result) => {
                 if (!result)
-                    reject()
+                    reject(error)
                 else
                     resolve(result)
             })
+        }).catch((error) => {
+            console.log(error)
         })
-        test = await new Promise((resolve) => {
-            resolve(bcrypt.compare(pass, dbquery.password));
-        })
-        console.log("hash comparison =", test)
-        if(test) {
-            req.session.user = dbquery._id;
-            req.session.name = dbquery.username;
-            req.session.fname = dbquery.fname;
-            req.session.lname = dbquery.lname;
-            req.session.host = dbquery.host;
-            req.session.contact = dbquery.contact;
-            console.log(req.session);
 
-            if(result.host)
-                res.redirect('/hhome');
-            else 
-                res.redirect('/home');
+        if(!dbquery) {
+            req.flash('error_msg', 'Username not found.');   
+            res.redirect('/login');
         }
         else {
-            req.flash('error_msg', 'Incorrect password.');   
-            res.redirect('/login');
+            console.log("Here2")
+            test = await new Promise((resolve) => {
+                resolve(bcrypt.compare(pass, dbquery.password));
+            })
+
+
+            console.log("hash comparison =", test)
+            if(test) {
+                req.session.user = dbquery._id;
+                req.session.name = dbquery.username;
+                req.session.fname = dbquery.fname;
+                req.session.lname = dbquery.lname;
+                req.session.host = dbquery.host;
+                req.session.contact = dbquery.contact;
+                console.log(req.session);
+
+                if(result.host)
+                    res.redirect('/hhome');
+                else 
+                    res.redirect('/home');
+            }
+            else {
+                req.flash('error_msg', 'Incorrect password.');   
+                res.redirect('/login');
+            }
         }
     },
 

@@ -291,7 +291,7 @@ const HostController = {
                 res.render('./onSession/hnotifications', {isHost: true, username: req.session.name, read: read.reverse(), unread: unread.reverse()});
             })
         })
-    },
+    }
 }
 
 module.exports = HostController;

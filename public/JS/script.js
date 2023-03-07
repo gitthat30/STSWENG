@@ -216,6 +216,28 @@ $('#edit-btn').click(function() {
 });
 /* End of add photos */
 
+$('#change-btn').click(function() {
+    console.log( $(event.currentTarget).closest('body').find('#password-change'))
+    $(event.currentTarget).closest('body').find('#password-change').html('<form action="/testtt" method="POST" id="pass-form">' + 
+    '<br>' + 
+        'New Password:      <input type="text" name="newpass" required><br><br>' + 
+        'Validate Password: <input type="text" name="valpass" required><br><br>' + 
+    '</form>' +
+    '<button type = "button" class="global-button" id="cancel-btn">Cancel</button> <button type = "button" class="global-button" id="confpass-btn">Confirm</button>')
+});
+
+$('#password-change').on("click", "#cancel-btn", (function() {
+    console.log("Test")
+    console.log( $(event.currentTarget).closest('body').find('#password-change'))
+    $(event.currentTarget).closest('body').find('#password-change').html('')
+}));
+
+$('#password-change').on("click", "#confpass-btn", (function() {
+    console.log("Test")
+    console.log( $(event.currentTarget).closest('body').find('#password-change'))
+    $(event.currentTarget).closest('body').find('#pass-form').submit()
+}));
+/* End of change password */
 
 /* Register form validation */
 $('form[action="/registeruser"] input[name="name"], form[action="/registeruser"] input[name="pass"]').on('input', function() {

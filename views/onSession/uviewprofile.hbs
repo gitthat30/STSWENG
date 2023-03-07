@@ -1,0 +1,24 @@
+{{> wrapper_header page_title='Profile'}}
+
+<div class="container contact-container">
+    <left>
+    <p><h2>Basic Information</h2></p>
+    <br>
+    <p><h3>First Name: {{fname}}</h3></p>
+    <p><h3>Last Name: {{lname}}</h3></p>
+    <p><h3>Contact Number: {{contact}}</h3></p>
+    <br><br>
+    <p><h2>Account Security</h2></p>
+    <br>
+    <p><h3>Current Password: ************   <button type = "button" class="global-button" id="change-btn">Change Password</button></h3></p>
+    <div id="password-change">
+        
+    </div>
+    <br>
+    <p><h3>Security Question 1: {{q1}}</h3></p>
+    <p><h3>Security Question 2: {{q2}}</h3></p>
+    <p><h3>Security Question 3: {{q3}}</h3></p>
+
+</div>
+
+{{> wrapper_footer}}
