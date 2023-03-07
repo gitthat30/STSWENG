@@ -678,7 +678,7 @@ const UserController = {
                 if(!n.read)
                     notifcount++;
             })
-            res.render('./onSession/uviewprofile', {isHost: false, username: req.session.name, fname: req.session.fname, lname: req.session.lname, contact: result.contact, q1: result.questions[0].question, q2: result.questions[1].question, q3: result.questions[2].question, notifcount});
+            res.render('./onSession/uviewprofile', {isHost: false, username: req.session.name, fname: req.session.fname, lname: req.session.lname, email: result.email, contact: result.contact, q1: result.questions[0].question, q2: result.questions[1].question, q3: result.questions[2].question, notifcount});
         })
     },
 
