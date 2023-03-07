@@ -294,4 +294,14 @@ $('.cancel-edit-balance').click(function() {
     $(this).parent().parent().siblings('.active-host-card-bottom').find('.add-field').prop('disabled', false);
     $(this).parent().parent().siblings('.active-host-card-bottom').find('.add-field').css('background-color', 'white')
 });
+
+$('#Feedback_box').keypress(function(event){
+    var userFeedback = $('#Feedback_box').val();
+    var keycode = (event.keycode ? event.keycode : event.which);
+    if (keycode == '13'){
+        $.get('/enterFeedback', {feedback: userFeedback}, function(){
+            console.log(userFeedback);
+        })
+    }
+});
 /* End of edit balance */
