@@ -21,6 +21,8 @@ const http = require('http');
 const account = require('../models/Accounts.js');
 const request = require('../models/Requests.js');
 
+const passwordchange = require('../util/passwordchange')
+
 const { totalmem } = require('os');
 
 const UserController = {
@@ -678,6 +680,17 @@ const UserController = {
             })
             res.render('./onSession/uviewprofile', {isHost: false, username: req.session.name, fname: req.session.fname, lname: req.session.lname, contact: result.contact, q1: result.questions[0].question, q2: result.questions[1].question, q3: result.questions[2].question, notifcount});
         })
+    },
+
+    confirmPassword: async function(req, res) {
+        console.log(req.body.newpass)
+        console.log(req.body.valpass)
+        await new Promise((resolve) => {
+            passwordchange.changePass(req.body.newpass, req.session.name)
+            resolve()
+        })
+
+        res.redirect('/viewprofile')
     }
 }
 

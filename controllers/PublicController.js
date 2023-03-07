@@ -64,16 +64,17 @@ const PublicController = {
         console.log("Here")
         //Finds the username entered in the db, checks the password entered if it matches the one in the DB, then logs the user in if they match.
         dbquery = await new Promise((resolve, reject) => {
-            db.findOne(account, {username: user}, {}, (error, result) => {
+            db.findOne(account, {username: user}, {}, (result) => {
                 if (!result)
-                    reject(error)
+                    reject()
                 else
                     resolve(result)
             })
-        }).catch((error) => {
-            console.log(error)
+        }).catch(() => {
+            console.log("error")
+            console.log(result)
         })
-
+        
         if(!dbquery) {
             req.flash('error_msg', 'Username not found.');   
             res.redirect('/login');
@@ -101,7 +102,7 @@ const PublicController = {
                     res.redirect('/home');
             }
             else {
-                req.flash('error_msg', 'Incorrect password.');   
+                req.flash('error_msg', 'User Credentials entered wrong.');   
                 res.redirect('/login');
             }
         }

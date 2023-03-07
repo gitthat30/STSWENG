@@ -218,24 +218,31 @@ $('#edit-btn').click(function() {
 
 $('#change-btn').click(function() {
     console.log( $(event.currentTarget).closest('body').find('#password-change'))
-    $(event.currentTarget).closest('body').find('#password-change').html('<form action="/testtt" method="POST" id="pass-form">' + 
+    $(event.currentTarget).closest('body').find('#password-change').html('<form action="/confirmPass" method="POST" id="pass-form">' + 
     '<br>' + 
-        'New Password:      <input type="text" name="newpass" required><br><br>' + 
-        'Validate Password: <input type="text" name="valpass" required><br><br>' + 
+    '<div class="error-msg"></div>' +
+        'New Password:      <input type="password" name="newpass" id="newpass" required><br><br>' + 
+        'Validate Password: <input type="password" name="valpass" id="valpass" required><br><br>' + 
     '</form>' +
     '<button type = "button" class="global-button" id="cancel-btn">Cancel</button> <button type = "button" class="global-button" id="confpass-btn">Confirm</button>')
 });
 
 $('#password-change').on("click", "#cancel-btn", (function() {
     console.log("Test")
-    console.log( $(event.currentTarget).closest('body').find('#password-change'))
+    console.log($(event.currentTarget).closest('body').find('#newpass'))
+    
     $(event.currentTarget).closest('body').find('#password-change').html('')
 }));
 
 $('#password-change').on("click", "#confpass-btn", (function() {
     console.log("Test")
     console.log( $(event.currentTarget).closest('body').find('#password-change'))
-    $(event.currentTarget).closest('body').find('#pass-form').submit()
+    if (!$(event.currentTarget).closest('body').find('#newpass').val() || !$(event.currentTarget).closest('body').find('#valpass').val() )
+        $(event.currentTarget).closest('body').find('.error-msg').html("Please make sure fill out both fields.")
+    else if ($(event.currentTarget).closest('body').find('#newpass').val() != $(event.currentTarget).closest('body').find('#valpass').val())
+        $(event.currentTarget).closest('body').find('.error-msg').html("Please make sure both passwords entered are the same.")
+    else
+        $(event.currentTarget).closest('body').find('#pass-form').submit()
 }));
 /* End of change password */
 
