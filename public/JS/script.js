@@ -286,6 +286,10 @@ $('.edit-balance-button').click(function() {
     $(this).siblings('.edit-outstanding').show();
 });
 
+$('.replyFeedback').click(function(){
+    $(this).siblings('.hostReply').show()
+})
+
 $('.cancel-edit-balance').click(function() {
     $(this).parent().hide();
     $(this).parent().siblings('.settle').show();
@@ -293,6 +297,12 @@ $('.cancel-edit-balance').click(function() {
     $(this).parent().parent().siblings('.active-host-card-bottom').find('.add-button').removeClass('global-button-disabled disabled-button');
     $(this).parent().parent().siblings('.active-host-card-bottom').find('.add-field').prop('disabled', false);
     $(this).parent().parent().siblings('.active-host-card-bottom').find('.add-field').css('background-color', 'white')
+});
+
+$('.SendFeedback').click(function(){
+    var userid = $(this).attr('id');
+    console.log(userid);
+    location.href="/uviewfeedback";
 });
 
 $('#Feedback_box').keypress(function(event){
@@ -304,4 +314,6 @@ $('#Feedback_box').keypress(function(event){
         })
     }
 });
+
+
 /* End of edit balance */

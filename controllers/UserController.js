@@ -709,6 +709,7 @@ const UserController = {
     enterFeedback: function(req,res){
         var userFeedback = req.query.feedback;
         var username = req.session.name;
+        console.log(userFeedback)
         var newFeedback = {
             username: username,
             feedback: userFeedback

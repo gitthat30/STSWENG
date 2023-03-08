@@ -67,6 +67,8 @@ app.get("/uviewcontact", isPrivate, UserController.viewContact);
 // [CLIENT] VIEW FEEDBACK
 app.get("/enterFeedback", isPrivate, UserController.enterFeedback);
 app.get("/uviewfeedback", isPrivate, UserController.viewFeedBack);
+// [HOST] VIEW FEEDBACK 
+app.get("/hviewfeedback", isHost, HostController.viewFeedBack);
 
 // [HOST] Customer Estimation Requests
 app.get("/hviewallpending", isHost, HostController.getPendingRequests);
