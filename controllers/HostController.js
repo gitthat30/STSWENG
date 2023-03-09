@@ -6,6 +6,7 @@ const db = require('../models/db.js');
 const path = require('path');
 const account = require('../models/Accounts.js');
 const request = require('../models/Requests.js');
+const feedback = require('../models/Feedback.js');
 const { totalmem } = require('os');
 
 const HostController = {
@@ -291,7 +292,19 @@ const HostController = {
                 res.render('./onSession/hnotifications', {isHost: true, username: req.session.name, read: read.reverse(), unread: unread.reverse()});
             })
         })
-    }
+    },
+
+    viewFeedBack: function(req,res) {
+        db.findMany(feedback, {}, "username feedback", function(result){
+            const data = result;
+            var AllFeedBack = []
+            data.forEach((i) => {
+                AllFeedBack.push({username: i.username, feedback: i.feedback})
+                console.log (AllFeedBack)
+            })
+            res.render ('./onSession/hviewfeedback', {isHost: true, feedbackcard: AllFeedBack});
+        })
+    },
 }
 
 module.exports = HostController;

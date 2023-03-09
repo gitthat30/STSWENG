@@ -20,6 +20,7 @@ const http = require('http');
 //Model Schemas
 const account = require('../models/Accounts.js');
 const request = require('../models/Requests.js');
+const feedback = require('../models/Feedback.js');
 
 const profile = require('../util/profileedit')
 
@@ -693,6 +694,33 @@ const UserController = {
         })
 
         res.redirect('/viewprofile')
+    },
+
+    viewFeedBack: function(req,res) {
+        db.findMany(feedback, {}, "username feedback", function(result){
+            const data = result;
+            var AllFeedBack = []
+            data.forEach((i) => {
+                AllFeedBack.push({username: i.username, feedback: i.feedback})
+                console.log (AllFeedBack)
+            })
+            res.render ('./onSession/uviewfeedback', {isHost: false, feedbackcard: AllFeedBack});
+        })
+    },
+
+    enterFeedback: function(req,res){
+        var userFeedback = req.query.feedback;
+        var username = req.session.name;
+        console.log(userFeedback)
+        var newFeedback = {
+            username: username,
+            feedback: userFeedback
+        }
+        db.insertOne(feedback, newFeedback, function(){
+            console.log("Successful Add")
+            res.redirect('/uviewfeedback')
+        })
+
     },
 
     editProfile: async function(req, res) {

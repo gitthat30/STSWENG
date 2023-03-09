@@ -1,0 +1,15 @@
+{{> wrapper_header page_title='Feedback'}}
+
+<div class="container contact-container">
+    <div id="feedback-container">
+        {{#each feedbackcard}}
+            {{> feedbackcard}}
+        {{/each}}
+    </div>
+    <form id="feedback_form">
+        <input type="Text" id="Feedback_box" placeholder="Add Feedback">
+    </form>
+</div>
+
+{{> wrapper_footer}}
+
