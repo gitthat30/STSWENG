@@ -42,6 +42,8 @@ app.post('/downloadFile', isPrivate, UserController.download);
 // [CLIENT] Profile View
 app.get('/viewprofile', isPrivate, UserController.viewProfile);
 app.post('/confirmPass', isPrivate, UserController.confirmPassword);
+app.get('/editprofile', isPrivate, UserController.editProfile);
+app.post('/confirmeditprofile', isPrivate, UserController.confirmeditProfile);
 
 // [CLIENT] Create Estimation Request
 app.get("/createreq", isPrivate, UserController.getUserRequestCreation);

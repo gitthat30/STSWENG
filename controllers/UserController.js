@@ -21,7 +21,7 @@ const http = require('http');
 const account = require('../models/Accounts.js');
 const request = require('../models/Requests.js');
 
-const passwordchange = require('../util/passwordchange')
+const profile = require('../util/profileedit')
 
 const { totalmem } = require('os');
 
@@ -671,6 +671,8 @@ const UserController = {
     },
 
     viewProfile: async function(req, res) {
+        console.log("Hmmm?")
+        console.log(req.session)
         notifcount = 0
         db.findOne(account, {_id: req.session.user}, {}, function(result) {
             console.log(typeof result.notifications)
@@ -686,11 +688,89 @@ const UserController = {
         console.log(req.body.newpass)
         console.log(req.body.valpass)
         await new Promise((resolve) => {
-            passwordchange.changePass(req.body.newpass, req.session.name)
+            profile.changePass(req.body.newpass, req.session.name)
             resolve()
         })
 
         res.redirect('/viewprofile')
+    },
+
+    editProfile: async function(req, res) {
+        db.findOne(account, {_id: req.session.user}, {}, function(result) {
+            console.log(typeof result.notifications)
+            result.notifications.forEach(n => {
+                if(!n.read)
+                    notifcount++;
+            })
+            res.render('./onSession/ueditprofile', {isHost: false, username: req.session.name, fname: req.session.fname, lname: req.session.lname, email: result.email, contact: result.contact, q1: result.questions[0].question, q2: result.questions[1].question, q3: result.questions[2].question, notifcount});
+        })
+    },
+
+    //Note to self: Add check for same email and contact
+    confirmeditProfile: async function(req, res) {
+        test = await new Promise ((resolve) => {
+            db.findOne(account, { $or: [{contact: req.body.contact}, {email: req.body.email}]}, {}, function(result) {
+                console.log("logging test")
+                console.log(result)
+                resolve(result)
+            })
+        }) 
+        
+        if (test) {
+            console.log("here")
+            console.log(req.session);
+            console.log("flags")
+            console.log(test.contact == req.body.contact)
+            console.log(test.email == req.session.email)
+            console.log(test.username != req.session.name)
+            console.log(test.username != req.session.name)
+            if (test.contact == req.body.contact && test.username != req.session.name) {
+                console.log("Yoooo")
+                req.flash('error_msg', 'This contact number is already registered.');
+                res.redirect('/viewprofile');
+            }
+            else if (test.email == req.body.email && test.username != req.session.name) {
+                req.flash('error_msg', 'This email is already registered.');
+                res.redirect('/viewprofile');
+            }
+            else {
+                console.log("Confirmedit")
+                await profile.editProfile(req.body.fname, req.body.lname, req.body.contact, req.body.email, req.session.name)
+                await console.log("Finished Edit")
+    
+                console.log("After edit")
+                result = await new Promise ((resolve) => {
+                    db.findOne(account, {_id: req.session.user}, {}, function(result) {
+                        resolve(result)
+                    })
+                })
+                
+                req.session.fname = result.fname
+                req.session.lname = result.lname
+                req.session.save()
+    
+                res.redirect('/viewprofile')
+            }
+        }
+        else {
+            console.log("Confirmedit")
+            await profile.editProfile(req.body.fname, req.body.lname, req.body.contact, req.body.email, req.session.name)
+            await console.log("Finished Edit")
+
+            console.log("After edit")
+            result = await new Promise ((resolve) => {
+                db.findOne(account, {_id: req.session.user}, {}, function(result) {
+                    resolve(result)
+                })
+            })
+            req.flash('error_msg', 'Only select image files.');
+
+            req.session.fname = result.fname
+            req.session.lname = result.lname
+            req.session.save()
+
+            res.redirect('/viewprofile')
+        }
     }
 }
 
