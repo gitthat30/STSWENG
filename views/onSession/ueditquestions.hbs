@@ -1,0 +1,56 @@
+{{> wrapper_header page_title='Profile'}}
+
+<div class="container contact-container">
+    <left>
+    <p><h2>Basic Information</h2></p>
+    <br>
+    <form action="/confirmquestions" method="POST">
+    <div id="def-que">
+        <p><h3>
+            <form>
+            
+            Security Question 1: 
+            <select name="q1">
+                <option selected>What is your favorite number?</option>
+                <option>What is your mom's maiden name?</option>
+                <option>What is your favorite food?</option>
+                <option>What is the name of your first pet?</option>
+            </select>
+            <br><br>
+            Answer: <input type="text" name="a1" required>
+            <br><br>
+
+            Security Question 2: 
+            <select name="q2">
+                <option>What is your favorite number?</option>
+                <option selected>What is your mom's maiden name?</option>
+                <option>What is your favorite food?</option>
+                <option>What is the name of your first pet?</option>
+            </select>
+            <br><br>
+            Answer: <input type="text" name="a2" required>
+            <br><br>
+
+            Security Question 3: 
+            <select name="q3">
+                <option>What is your favorite number?</option>
+                <option>What is your mom's maiden name?</option>
+                <option selected>What is your favorite food?</option>
+                <option>What is the name of your first pet?</option>
+            </select>
+            <br><br>
+            Answer: <input type="text" name="a3" required>
+            <br><br>
+        </h3></p>
+        
+        <br>
+        <div id="4th-que">
+            <button class="global-button" id="add-que">Add Fourth Question</button></h3></p>
+        </div>
+    </div>
+    <br>
+    <button type="submit" class="global-button">Confirm</button></h3></p>
+    </form>
+</div>
+
+{{> wrapper_footer}}
