@@ -3,12 +3,13 @@
 <div class="container contact-container">
     <div id="feedback-container">
         {{#each feedbackcard}}
-            {{> feedbackcard}} <br>
-            <form class="hostReply" id="feedback_form">
-                <input type="Text" id="Feedback_box" placeholder="Reply">
-            </form> <br>
+            {{> feedbackcard}}
         {{/each}}
     </div>
+    <br>
+    <form class="hostReply" id="feedback_form">
+        <input type="Text" id="Feedback_box" placeholder="Reply">
+    </form> <br>
 </div>
 
 {{> wrapper_footer}}

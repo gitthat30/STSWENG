@@ -784,7 +784,7 @@ const UserController = {
         }
         db.insertOne(feedback, newFeedback, function(){
             console.log("Successful Add")
-            res.redirect('/uviewfeedback')
+            res.redirect('./onSession/uviewfeedback')
         })
 
     },
