@@ -857,7 +857,6 @@ const UserController = {
                     resolve(result)
                 })
             })
-            req.flash('error_msg', 'Only select image files.');
 
             req.session.fname = result.fname
             req.session.lname = result.lname
