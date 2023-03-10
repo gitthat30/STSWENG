@@ -16,16 +16,53 @@ const functions = {
   },
 
   editProfile: async function(fname, lname, contact, email, username) {
-    await console.log("editProfile")
-    await console.log(fname)
-    await console.log(lname)
-    await console.log(contact)
-    await console.log(email)
-    await console.log(username)
     await new Promise ((resolve) => {
       db.updateOne(account, {username: username}, {fname: fname, lname: lname, contact: contact, email: email}, (result) => {
-        console.log("Hello");
-        console.log(result)
+        resolve(result)
+      })
+    })
+  },
+
+  editQuestions: async function(q1, q2, q3, q4, a1, a2, a3, a4, username) {
+    console.log("Edit Questions")
+    questions = await new Promise ((resolve) => {
+      questions = []
+      
+      questions.push (
+        {
+          question: q1,
+          answer: a1
+        }
+      )
+
+      questions.push (
+        {
+          question: q2,
+          answer: a2
+        }
+      )
+      
+      questions.push (
+        {
+          question: q3,
+          answer: a3
+        }
+      )
+
+      if(q4) {
+        questions.push (
+          {
+            question: q4,
+            answer: a4
+          }
+        )
+      }
+
+      resolve(questions)
+    })
+
+    await new Promise ((resolve) => {
+      db.updateOne(account, {username: username}, {questions:questions}, (result) => {
         resolve(result)
       })
     })

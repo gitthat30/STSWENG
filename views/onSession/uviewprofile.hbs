@@ -9,7 +9,11 @@
     <p><h3>Last Name: {{lname}}</h3></p>
     <p><h3>Email: {{email}}</h3></p>
     <p><h3>Contact Number: {{contact}}</h3></p><br>
-    <button onclick="window.location='/editprofile'" class="global-button">Edit Profile</button>            <button type = "button" class="global-button" id="change-btn">Delete Account</button></h3></p>
+    <button onclick="window.location='/editprofile'" class="global-button">Edit Profile</button>            <button class="global-button" id="del-btn">Delete Account</button></h3></p>
+    <br>
+    <div id="delete-account">
+        
+    </div>
     <br><br>
     <p><h2>Account Security</h2></p>
     <br>
@@ -18,10 +22,28 @@
         
     </div>
     <br>
-    <p><h3>Security Question 1: {{q1}}</h3></p>
-    <p><h3>Security Question 2: {{q2}}</h3></p>
-    <p><h3>Security Question 3: {{q3}}</h3></p>
+    <div id="sec-que">
+        <p><h3>
+        Security Question 1: {{q1}}<br>
+        Answer: {{a1}}<br><br>
+        Security Question 2: {{q2}}<br>
+        Answer: {{a2}}<br><br>
+        Security Question 3: {{q3}}<br>
+        Answer: {{a3}}<br><br>
+        </h3></p>
+        {{#if a4}}
+            <p><h3>
+                Security Question 4: {{q4}}<br>
+                Answer: {{a4}}<br><br>
+            </h3></p>
+        {{/if}}
+        <br><button onclick="window.location='/editquestions'" class="global-button" id="edi-sec">Edit Security Questions</button></h3></p>
+    </div>
 
+     
+        </form>
+    <br>
+    
 </div>
 
 {{> wrapper_footer}}

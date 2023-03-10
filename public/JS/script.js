@@ -246,6 +246,78 @@ $('#password-change').on("click", "#confpass-btn", (function() {
 }));
 /* End of change password */
 
+$('#del-btn').click(function () {
+    $('#delete-account').html(
+        "Are you sure you want to delete your account?<br><br>" +
+        "<button id = 'con-del' class='global-button' onclick=" + '"' + "window.location='/deleteaccount'" + '"> Yes </button>' + " " + '<button id="rej-del" class="global-button" id="del-btn">No</button>'
+    )
+})
+$('#delete-account').on("click", "#rej-del", (function () {
+    console.log("test")
+    $('#delete-account').html('')
+}));
+/* End of delete account */
+
+
+$('body').on("click", "#add-que", () => {
+    $('#4th-que').html(
+        '<p><h3>Security Question 4: ' +
+        '<select name="q4">' +
+            '<option>What is your favorite number?</option>' +
+            "<option>What is your mom's maiden name?</option>" +
+            '<option>What is your favorite food?</option>' +
+            '<option selected>What is the name of your first pet?</option>' +
+        '</select>' +
+        '<br><br>' +
+        'Answer: <input type="text" name="a4" required>' +
+        '<br><br></h3></p>' +
+        '<button class="global-button" id="rem-que">Remove Fourth Question</button></h3></p>'
+    )
+})
+
+$('body').on("click", "#rem-que", () => {
+    $('#def-que').html(
+        '<p><h3>Security Question 1: ' +
+        '<select name="q1">' +
+            '<option>What is your favorite number?</option>' +
+            "<option>What is your mom's maiden name?</option>" +
+            '<option>What is your favorite food?</option>' +
+            '<option>What is the name of your first pet?</option>' +
+        '</select>' +
+        '<br><br>' +
+        'Answer: <input type="text" name="a1" required>' +
+        '<br><br>' +
+
+        'Security Question 2: ' +
+        '<select name="q2">' +
+            '<option>What is your favorite number?</option>' +
+            "<option selected>What is your mom's maiden name?</option>" +
+            '<option>What is your favorite food?</option>' +
+'<option>What is the name of your first pet?</option>' +
+        '</select>' +
+        '<br><br>' +
+        'Answer: <input type="text" name="a2" required>' +
+        '<br><br>' +
+
+        'Security Question 3: ' +
+        '<select name="q3">' +
+            '<option>What is your favorite number?</option>' +
+            "<option>What is your mom's maiden name?</option>" +
+            '<option selected>What is your favorite food?</option>' +
+            '<option>What is the name of your first pet?</option>' +
+        '</select>' +
+        '<br><br>' +
+        'Answer: <input type="text" name="a3" required>' +
+        '<br><br>' +
+    '</h3></p>' +
+
+    '<div id="4th-que">' +
+        '<button class="global-button" id="add-que">Add Fourth Question</button></h3></p>' +
+    '</div>'
+    )
+})
+/* End of Edit Security Questions */
+
 /* Register form validation */
 $('form[action="/registeruser"] input[name="name"], form[action="/registeruser"] input[name="pass"]').on('input', function() {
     if($(this).val().endsWith(' ')) {

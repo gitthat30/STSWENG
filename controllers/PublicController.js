@@ -72,11 +72,10 @@ const PublicController = {
             })
         }).catch(() => {
             console.log("error")
-            console.log(result)
         })
         
         if(!dbquery) {
-            req.flash('error_msg', 'Username not found.');   
+            req.flash('error_msg', 'User not found.');   
             res.redirect('/login');
         }
         else {

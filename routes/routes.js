@@ -40,10 +40,13 @@ app.post("/sendmessage", isPrivate, UserController.sendMessage);
 app.post('/downloadFile', isPrivate, UserController.download);
 
 // [CLIENT] Profile View
-app.get('/viewprofile', isPrivate, UserController.viewProfile);
+app.get('/uviewprofile', isPrivate, UserController.viewProfile);
 app.post('/confirmPass', isPrivate, UserController.confirmPassword);
 app.get('/editprofile', isPrivate, UserController.editProfile);
+app.get('/editquestions', isPrivate, UserController.editQuestions);
+app.post('/confirmquestions', isPrivate, UserController.confirmQuestions);
 app.post('/confirmeditprofile', isPrivate, UserController.confirmeditProfile);
+app.get('/deleteaccount', isPrivate, UserController.deleteAccount);
 
 // [CLIENT] Create Estimation Request
 app.get("/createreq", isPrivate, UserController.getUserRequestCreation);
