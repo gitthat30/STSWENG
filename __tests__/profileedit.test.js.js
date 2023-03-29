@@ -4,8 +4,6 @@ const bcrypt = require('../util/bcrypt')
 const profile = require('../util/profileedit')
 const mongoose = require('mongoose');
 
-jest.setTimeout(50000)
-
 beforeAll(async () => {
   await db.connect()
   
@@ -41,9 +39,17 @@ beforeAll(async () => {
     }
   )
 
+
   await new Promise ( (resolve) => {
     db.insertOne(account, {
-        
+      fname: "First",
+      lname: "Last",
+      username: testuser,
+      password: "123",
+      questions: questions,
+      contact: "1234",
+      email: "t@a",
+      host: true
     }, (result) => {resolve(result)})
   })
 
@@ -216,6 +222,10 @@ test('editQuestion properly changes answer 4', async () => {
 
 afterAll(async () => {
   await new Promise ( (resolve) => {
+    db.findOne(account, {username: "testing"}, {}, async (result) => {
+      await console.log(result)
+    })
+
     db.deleteOne(account, {username: "testing"}, (result) => {resolve(result)})
   })
 
