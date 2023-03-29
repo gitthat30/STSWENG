@@ -7,7 +7,7 @@ on:
   push:
     branches:
       - 'main'
-      - 'development'
+      - 'Development'
   pull_request:
   release:
     types: [created]
