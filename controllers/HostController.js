@@ -8,6 +8,7 @@ const account = require('../models/Accounts.js');
 const request = require('../models/Requests.js');
 const feedback = require('../models/Feedback.js');
 const { totalmem } = require('os');
+const bcrypt = require('../util/bcrypt')
 
 const HostController = {
 
@@ -36,7 +37,7 @@ const HostController = {
         var requests = await request.find({status: 'Pending'});
         res.render('./onSession/hpendingrequests', {req: requests.reverse(), isHost: true, username: req.session.name});
     },
-
+ 
 
     //Renders a specific request. Sames as the one in the UserController, but this one contains functions that only the HOST has access to. (See the hbs it renders and compare it to the user's for more info!)
     viewRequest: async function(req, res) {
@@ -282,12 +283,14 @@ const HostController = {
         db.findOne(account, {_id: req.session.user}, {}, function(result) {
             read = [];
             unread = [];
+
             result.notifications.forEach(n => {
                 if(!n.read)
                     read.push(n)
                 else
                     unread.push(n)
             })
+        
             db.updateOne(account, {_id: req.session.user}, {$set: {"notifications.$[].read": true}}, (result) => { //Sets all notifications as read
                 res.render('./onSession/hnotifications', {isHost: true, username: req.session.name, read: read.reverse(), unread: unread.reverse()});
             })
@@ -305,6 +308,105 @@ const HostController = {
             res.render ('./onSession/hviewfeedback', {isHost: true, feedbackcard: AllFeedBack});
         })
     },
+
+    newHost: async function (req, res) {
+        db.findOne(account, {_id: req.session.user}, {}, function(result) {
+            read = [];
+            unread = [];
+
+            result.notifications.forEach(n => {
+                if(!n.read)
+                    read.push(n)
+                else
+                    unread.push(n)
+            })
+
+            res.render('./onSession/hregister', {isHost: true, username: req.session.name})
+        })
+    },
+
+    registerHost: async function(req, res) {
+        if(req.body.q1 == req.body.q2 || req.body.q1 == req.body.q3 || req.body.q2 == req.body.q3) {
+            req.flash("error_msg", "Please make sure each question is distinct!")
+            res.redirect('/hregister')
+        }
+        else {
+            //Gets the values entered
+            newaccount = {
+                fname: req.body.fname.trim(),
+                lname: req.body.lname.trim(),
+                username: req.body.name.trim(),
+                password: null,
+                questions: null,
+                contact: req.body.contact.trim(),
+                email: req.body.email.trim(),
+                host: true
+            }
+
+            console.log(req.body)
+            console.log(newaccount)
+
+            //DB function looks for a matching username, contact number and or email...
+            db.findOne(account, { $or: [{username: newaccount.user}, {contact: newaccount.contact}, {email: newaccount.email}]}, {}, async (result) => {
+
+                //If found, account creation is stopped.
+                if (result) {
+                    console.log(result);
+                    if (result.username == newaccount.user)
+                        req.flash('error_msg', 'User already exists. Please login.');
+                    else if (result.contact == newaccount.con)
+                        req.flash('error_msg', 'This contact number is already registered.');
+                    else if (result.email == newaccount.email)
+                        req.flash('error_msg', 'This email is already registered.');
+                    res.redirect('/hregister');
+                }
+                else { //Else, we proceed with the next step in creating an account
+                    questions = []
+
+                    questions.push (
+                        {
+                          question: req.body.q1,
+                          answer: req.body.a1
+                        }
+                      )
+                    
+                    questions.push (
+                        {
+                            question: req.body.q2,
+                            answer: req.body.a2
+                        }
+                    )
+                    
+                    questions.push (
+                        {
+                            question: req.body.q3,
+                            answer: req.body.a3
+                        }
+                    )
+                    
+                    if(req.body.q4)
+                        questions.push (
+                            {
+                                question: req.body.q4,
+                                answer: req.body.a4
+                            }
+                        )
+                    
+                    newaccount.questions = questions
+
+                    encrypted = await new Promise((resolve) => {
+                        resolve(bcrypt.hash(req.body.pass.trim()))
+                    })
+
+                    newaccount.password = encrypted
+                    account.create(newaccount)
+
+                    req.flash('success_msg', 'Host Account successfully created.');
+                    res.redirect('/hregister')
+                }
+            }) 
+        }
+    }
 }
 
 module.exports = HostController;

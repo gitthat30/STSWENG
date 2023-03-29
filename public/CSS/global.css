@@ -333,3 +333,9 @@ footer div {
     text-align: center;
 }
 /* End of flash error messages */
+
+.success-msg {
+    color: #00d812;
+    margin-bottom: 10px;
+    text-align: center;
+}

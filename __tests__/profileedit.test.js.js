@@ -3,7 +3,9 @@ const account = require('../models/Accounts.js');
 const bcrypt = require('../util/bcrypt')
 const profile = require('../util/profileedit')
 const mongoose = require('mongoose');
+
 jest.setTimeout(50000)
+
 beforeAll(async () => {
   await db.connect()
   
@@ -41,13 +43,7 @@ beforeAll(async () => {
 
   await new Promise ( (resolve) => {
     db.insertOne(account, {
-      username: testuser,
-      password: "Default",
-      fname: "First",
-      lname: "Last",
-      contact: "123",
-      questions: questions,
-      email: "t@a"
+        
     }, (result) => {resolve(result)})
   })
 
