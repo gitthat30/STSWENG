@@ -3,7 +3,7 @@ const account = require('../models/Accounts.js');
 const bcrypt = require('../util/bcrypt')
 const profile = require('../util/profileedit')
 const mongoose = require('mongoose');
-jest.setTimeout(50000)
+
 beforeAll(async () => {
   await db.connect()
   
@@ -39,15 +39,17 @@ beforeAll(async () => {
     }
   )
 
+
   await new Promise ( (resolve) => {
     db.insertOne(account, {
-      username: testuser,
-      password: "Default",
       fname: "First",
       lname: "Last",
-      contact: "123",
+      username: testuser,
+      password: "123",
       questions: questions,
-      email: "t@a"
+      contact: "1234",
+      email: "t@a",
+      host: true
     }, (result) => {resolve(result)})
   })
 
@@ -220,6 +222,10 @@ test('editQuestion properly changes answer 4', async () => {
 
 afterAll(async () => {
   await new Promise ( (resolve) => {
+    db.findOne(account, {username: "testing"}, {}, async (result) => {
+      await console.log(result)
+    })
+
     db.deleteOne(account, {username: "testing"}, (result) => {resolve(result)})
   })
 

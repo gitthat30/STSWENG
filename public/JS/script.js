@@ -318,6 +318,65 @@ $('body').on("click", "#rem-que", () => {
 })
 /* End of Edit Security Questions */
 
+/*Start of Host Register */
+$('body').on("click", "#hadd-que", () => {
+    $('#4th-que').html(
+        '<p>Security Question 4: ' +
+        '<select name="q4">' +
+            '<option>What is your favorite number?</option>' +
+            "<option>What is your mom's maiden name?</option>" +
+            '<option>What is your favorite food?</option>' +
+            '<option selected>What is the name of your first pet?</option>' +
+        '</select>' +
+        '<br><br>' +
+        'Answer: <input type="text" name="a4" required>' +
+        '<br><br>' +
+        '<button class="global-button" id="hrem-que">Remove Fourth Question</button></p>'
+    )
+})
+
+$('body').on("click", "#hrem-que", () => {
+    $('#hsec-que').html(
+        '<p>Security Question 1: ' +
+        '<select name="q1">' +
+            '<option>What is your favorite number?</option>' +
+            "<option>What is your mom's maiden name?</option>" +
+            '<option>What is your favorite food?</option>' +
+            '<option>What is the name of your first pet?</option>' +
+        '</select>' +
+        '<br><br>' +
+        'Answer: <input type="text" name="a1" required>' +
+        '<br><br>' +
+
+        'Security Question 2: ' +
+        '<select name="q2">' +
+            '<option>What is your favorite number?</option>' +
+            "<option selected>What is your mom's maiden name?</option>" +
+            '<option>What is your favorite food?</option>' +
+'<option>What is the name of your first pet?</option>' +
+        '</select>' +
+        '<br><br>' +
+        'Answer: <input type="text" name="a2" required>' +
+        '<br><br>' +
+
+        'Security Question 3: ' +
+        '<select name="q3">' +
+            '<option>What is your favorite number?</option>' +
+            "<option>What is your mom's maiden name?</option>" +
+            '<option selected>What is your favorite food?</option>' +
+            '<option>What is the name of your first pet?</option>' +
+        '</select>' +
+        '<br><br>' +
+        'Answer: <input type="text" name="a3" required>' +
+        '<br><br>' +
+    '</h3></p>' +
+
+    '<div id="4th-que">' +
+        '<button class="global-button" id="hadd-que">Add Fourth Question</button></p>' +
+    '</div>'
+    )
+})
+
 /* Register form validation */
 $('form[action="/registeruser"] input[name="name"], form[action="/registeruser"] input[name="pass"]').on('input', function() {
     if($(this).val().endsWith(' ')) {

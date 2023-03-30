@@ -875,7 +875,7 @@ const UserController = {
                 res.redirect('/');
             });
         })
-    }
+    },
 }
 
 module.exports = UserController;
