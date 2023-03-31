@@ -1,12 +1,20 @@
 {{> wrapper_header page_title='Feedback'}}
 
+<div class = "Details">
+    <h1 class="carModel">{{car}}</p>
+    <h3 class="JobType">Job Type: {{Type}}</h3>
+    <h3 class="clientName">Client: {{client}}</h3>
+    <h3 class="requestNo">Request No.: {{id}}</h3>
+</div>
+
 <div class="container contact-container">
+    <h4>Message</h4>
     <div id="feedback-container">
         {{#each feedbackcard}}
             {{> feedbackcard}}
         {{/each}}
     </div>
-    <form class="feedback_form", >
+    <form class="feedback_form">
         <input type="Text" class="Feedback_box" id={{id}} placeholder="Add Feedback">
     </form>
 </div>

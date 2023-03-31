@@ -771,7 +771,12 @@ const UserController = {
                 AllFeedBack.push({username: i.username, feedback: i.feedback})
                 console.log (AllFeedBack)
             })
-            res.render ('./onSession/uviewfeedback', {isHost: false, feedbackcard: AllFeedBack, id:request_id});
+            db.findOne(request, {_id: request_id}, "username car type", function(result){
+                var client = result.username;
+                var carModel = result.car;
+                var jobType = result.type;
+                res.render ('./onSession/uviewfeedback', {isHost: false, feedbackcard: AllFeedBack, id:request_id, car: carModel, Type: jobType, client: client});
+            })
         })
     },
 
