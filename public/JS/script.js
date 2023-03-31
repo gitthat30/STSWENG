@@ -431,16 +431,17 @@ $('.cancel-edit-balance').click(function() {
 });
 
 $('.SendFeedback').click(function(){
-    var userid = $(this).attr('id');
-    console.log(userid);
-    location.href="/uviewfeedback";
+    var Request_id = $(this).attr('id');
+    console.log(Request_id);
+    location.href="/uviewfeedback/"+Request_id;
 });
 
-$('#Feedback_box').keypress(function(event){
-    var userFeedback = $('#Feedback_box').val();
+$('.Feedback_box').keypress(function(event){
+    var request_id = this.id;
+    var userFeedback = $('.Feedback_box').val();
     var keycode = (event.keycode ? event.keycode : event.which);
     if (keycode == '13'){
-        $.get('/enterFeedback', {feedback: userFeedback}, function(){
+        $.get('/enterFeedback', {request: request_id , feedback: userFeedback}, function(){
             console.log(userFeedback);
         })
     }
