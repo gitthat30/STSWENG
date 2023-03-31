@@ -40,8 +40,9 @@
             <button type="submit" class="global-button">CONFIRM EDIT</button>
             <button type="button" class="global-button gray-button cancel-edit-balance">CANCEL</button>
         </form>
-        <form action="/hviewfeedback" method="GET">
-            <button type="submit" class="global-button">Feedback</button>
+        
+        <form action="/hviewfeedback" method="POST">
+            <button type="submit" class="global-button" name="request_id" value="{{_id}}">Feedback</button>
         </form>
     </div>
     
