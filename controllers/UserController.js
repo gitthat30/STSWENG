@@ -763,25 +763,35 @@ const UserController = {
     },
 
     viewFeedBack: function(req,res) {
-        db.findMany(feedback, {}, "username feedback", function(result){
+        var request_id = req.params.id;
+    db.findMany(feedback, {Request_id: request_id}, "username feedback", function(result){
             const data = result;
             var AllFeedBack = []
             data.forEach((i) => {
                 AllFeedBack.push({username: i.username, feedback: i.feedback})
                 console.log (AllFeedBack)
             })
-            res.render ('./onSession/uviewfeedback', {isHost: false, feedbackcard: AllFeedBack});
+            db.findOne(request, {_id: request_id}, "username car type", function(result){
+                var client = result.username;
+                var carModel = result.car;
+                var jobType = result.type;
+                res.render ('./onSession/uviewfeedback', {isHost: false, feedbackcard: AllFeedBack, id:request_id, car: carModel, Type: jobType, client: client});
+            })
         })
     },
 
     enterFeedback: function(req,res){
         var userFeedback = req.query.feedback;
         var username = req.session.name;
+        var request_id = req.query.request;
+        console.log(request_id);
         console.log(userFeedback)
         var newFeedback = {
+            Request_id: request_id,
             username: username,
             feedback: userFeedback
         }
+        console.log(newFeedback);
         db.insertOne(feedback, newFeedback, function(){
             console.log("Successful Add")
             res.redirect('./onSession/uviewfeedback')

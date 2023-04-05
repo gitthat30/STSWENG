@@ -71,14 +71,15 @@ app.get("/uviewcontact", isPrivate, UserController.viewContact);
 
 // [CLIENT] VIEW FEEDBACK
 app.get("/enterFeedback", isPrivate, UserController.enterFeedback);
-app.get("/uviewfeedback", isPrivate, UserController.viewFeedBack);
+app.get("/uviewfeedback/:id", isPrivate, UserController.viewFeedBack);
 
 // [HOST] CREATE HOST ACCOUNT
 app.get("/hregister", isHost, HostController.newHost);
 app.post("/hregisterconfirm", isHost, HostController.registerHost);
 
 // [HOST] VIEW FEEDBACK 
-app.get("/hviewfeedback", isHost, HostController.viewFeedBack);
+app.post("/hviewfeedback", isHost, HostController.viewFeedBack);
+app.get("/henterFeedback", isHost, HostController.enterFeedback);
 
 // [HOST] Customer Estimation Requests
 app.get("/hviewallpending", isHost, HostController.getPendingRequests);
