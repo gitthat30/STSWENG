@@ -436,7 +436,7 @@ $('.SendFeedback').click(function(){
     location.href="/uviewfeedback/"+Request_id;
 });
 
-$('.Feedback_box').keypress(function(event){
+/*$('.Feedback_box').keypress(function(event){
     var request_id = this.id;
     var userFeedback = $('.Feedback_box').val();
     var keycode = (event.keycode ? event.keycode : event.which);
@@ -445,7 +445,14 @@ $('.Feedback_box').keypress(function(event){
             console.log(userFeedback);
         })
     }
-});
+}); */ 
+
+$('.Enter_Feedback').click(function(){
+    var request_id = this.id;
+    var userFeedback = $('.Feedback_box').val();
+    $.get('/enterFeedback', {request: request_id, feedback: userFeedback}, function(){ 
+    })
+})
 
 
 /* End of edit balance */

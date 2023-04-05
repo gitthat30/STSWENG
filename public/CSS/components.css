@@ -715,4 +715,63 @@
         width: 100%;
     }
 }
+
+.Details {
+    position: relative;
+    left:182px;
+}
+
+#feedback-container {
+    position: relative;
+    
+    left: 10px;
+
+    text-align: left;
+    font-family: 'IBM Plex Mono';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 18px;
+
+    color: #000000;
+}
+
+
+.Feedback-container input[type=Text] {
+
+    position: relative;
+
+    top: 20px;
+    width: 1076px;
+    height: 150px;  
+
+    padding: 20px 10px; 
+    line-height: 28px;
+
+    background: #F1F1F1;
+    border: 1px solid #ADADAD;
+    border-radius: 25px;
+}
+
+.Enter_Feedback {
+    
+    position: relative;
+    top: 50px;
+    left: 41%;
+
+    font-family: 'IBM Plex Mono';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 32px;
+    line-height: 42px;
+
+    background: #F1F1F1;
+    border: 1px solid #ADADAD;
+    border-radius: 10px;
+
+
+    color: #000000;
+
+}
+
 /* End of New Job page */
