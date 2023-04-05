@@ -315,6 +315,25 @@ const HostController = {
             })
         })
     },
+    
+    enterFeedback: function(req,res){
+        var userFeedback = req.query.feedback;
+        var username = req.session.name;
+        var request_id = req.query.request;
+        console.log(request_id);
+        console.log(userFeedback)
+        var newFeedback = {
+            Request_id: request_id,
+            username: username,
+            feedback: userFeedback
+        }
+        console.log(newFeedback);
+        db.insertOne(feedback, newFeedback, function(){
+            console.log("Successful Add")
+            res.redirect('./onSession/uviewfeedback')
+        })
+
+    },
 
     newHost: async function (req, res) {
         db.findOne(account, {_id: req.session.user}, {}, function(result) {

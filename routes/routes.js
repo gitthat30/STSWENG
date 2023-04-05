@@ -79,6 +79,7 @@ app.post("/hregisterconfirm", isHost, HostController.registerHost);
 
 // [HOST] VIEW FEEDBACK 
 app.post("/hviewfeedback", isHost, HostController.viewFeedBack);
+app.get("/henterFeedback", isHost, HostController.enterFeedback);
 
 // [HOST] Customer Estimation Requests
 app.get("/hviewallpending", isHost, HostController.getPendingRequests);

@@ -7,16 +7,16 @@
     <h3 class="requestNo">Request No.: {{id}}</h3>
 </div>
 
-<div class="container contact-container">
+<div class="container Feedback-container">
     <div id="feedback-container">
         {{#each feedbackcard}}
             {{> feedbackcard}}
         {{/each}}
     </div>
     <br>
-    <form class="hostReply" id="feedback_form">
-        <input type="Text" id="Feedback_box" placeholder="Reply">
-    </form> <br>
+    <input type="Text" class="Feedback_box" placeholder="Add Feedback">
+
+    <button class="Enter_Feedback_Host" id={{id}}>Send</button>
 </div>
 
 {{> wrapper_footer}}
