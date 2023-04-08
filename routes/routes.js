@@ -82,7 +82,11 @@ app.post("/hviewfeedback", isHost, HostController.viewFeedBack);
 app.get("/henterFeedback", isHost, HostController.enterFeedback);
 
 // [HOST] VIEW PROFILE
-app.get('/hviewprofile', isHost, HostController.viewProfile);
+app.get('/hviewprofile', isHost, HostController.hviewProfile);
+
+// [HOST] EDIT PROFILE
+app.get('/heditprofile', isPrivate, HostController.heditProfile);
+app.post('/hconfirmeditprofile', isPrivate, HostController.hconfirmeditProfile);
 
 // [HOST] Customer Estimation Requests
 app.get("/hviewallpending", isHost, HostController.getPendingRequests);

@@ -39,7 +39,10 @@
 				{{/if}}
 					<img src="IMAGES/close.png" alt="close icon" id="close-icon">
 					{{#if isHost}}
-					<a href = "/hviewprofile" class="nav-list-item"><div><p>VIEW PROFILE</p><img src="IMAGES/right-arrow.png" alt="arrow"></div></a>
+						{{#if (Equal username "HOST")}}
+						{{else}}
+							<a href = "/hviewprofile" class="nav-list-item"><div><p>VIEW PROFILE</p><img src="IMAGES/right-arrow.png" alt="arrow"></div></a>
+						{{/if}}
 					<a href = "/hviewallpending" class="nav-list-item"><div><p>CUSTOMER REQUESTS</p><img src="IMAGES/right-arrow.png" alt="arrow"></div></a>
 					<a href = "/hviewactive" class="nav-list-item"><div><p>ACTIVE JOBS</p><img src="IMAGES/right-arrow.png" alt="arrow"></div></a>
 					<a href = "/viewgeneratereport" class="nav-list-item"><div><p>GENERATE REPORT</p><img src="IMAGES/right-arrow.png" alt="arrow"></div></a>

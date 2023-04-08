@@ -9,6 +9,7 @@ const request = require('../models/Requests.js');
 const feedback = require('../models/Feedback.js');
 const { totalmem } = require('os');
 const bcrypt = require('../util/bcrypt')
+const profile = require('../util/profileedit')
 
 const HostController = {
 
@@ -372,7 +373,18 @@ const HostController = {
     
             if(mm/10 < 1) {
                 mm = '0' + mm
-            }    
+            } 
+
+            console.log("Testing = " + hr/10 + " and " + min/10)
+
+            if(hr/10 < 1) {
+                hr = '0' + hr
+            }
+
+            if(min/10 < 1) {
+                min = '0' + min
+            }
+
 
             today = yyyy+'-'+mm+'-'+dd +' ('+hr+':'+min+')';
 
@@ -454,7 +466,7 @@ const HostController = {
         }
     },
 
-    viewProfile: async function(req, res) {
+    hviewProfile: async function(req, res) {
         console.log("Hmmm?")
         console.log(req.session)
         notifcount = 0
@@ -511,6 +523,81 @@ const HostController = {
         })
     },
 
+    heditProfile: async function(req, res) {
+        db.findOne(account, {_id: req.session.user}, {}, function(result) {
+            console.log(typeof result.notifications)
+            result.notifications.forEach(n => {
+                if(!n.read)
+                    notifcount++;
+            })
+            res.render('./onSession/heditprofile', {isHost: false, username: req.session.name, fname: req.session.fname, lname: req.session.lname, pos: result.pos, email: result.email, contact: result.contact, q1: result.questions[0].question, q2: result.questions[1].question, q3: result.questions[2].question, notifcount});
+        })
+    },
+
+    hconfirmeditProfile: async function(req, res) {
+        test = await new Promise ((resolve) => {
+            db.findOne(account, { $or: [{contact: req.body.contact}, {email: req.body.email}]}, {}, function(result) {
+                console.log("logging test")
+                console.log(result)
+                resolve(result)
+            })
+        }) 
+        
+        if (test) {
+            console.log("here")
+            console.log(req.session);
+            console.log("flags")
+            console.log(test.contact == req.body.contact)
+            console.log(test.email == req.session.email)
+            console.log(test.username != req.session.name)
+            console.log(test.username != req.session.name)
+            if (test.contact == req.body.contact && test.username != req.session.name) {
+                console.log("Yoooo")
+                req.flash('error_msg', 'This contact number is already registered.');
+                res.redirect('/hviewprofile');
+            }
+            else if (test.email == req.body.email && test.username != req.session.name) {
+                req.flash('error_msg', 'This email is already registered.');
+                res.redirect('/hviewprofile');
+            }
+            else {
+                console.log("Confirmedit")
+                await profile.editProfile(req.body.fname, req.body.lname, req.body.pos, req.body.contact, req.body.email, req.session.name)
+                await console.log("Finished Edit")
+    
+                console.log("After edit")
+                result = await new Promise ((resolve) => {
+                    db.findOne(account, {_id: req.session.user}, {}, function(result) {
+                        resolve(result)
+                    })
+                })
+                
+                req.session.fname = result.fname
+                req.session.lname = result.lname
+                req.session.save()
+    
+                res.redirect('/hviewprofile')
+            }
+        }
+        else {
+            console.log("Confirmedit")
+            await profile.editProfile(req.body.fname, req.body.lname, req.body.pos, req.body.contact, req.body.email, req.session.name)
+            await console.log("Finished Edit")
+
+            console.log("After edit")
+            result = await new Promise ((resolve) => {
+                db.findOne(account, {_id: req.session.user}, {}, function(result) {
+                    resolve(result)
+                })
+            })
+
+            req.session.fname = result.fname
+            req.session.lname = result.lname
+            req.session.save()
+
+            res.redirect('/hviewprofile')
+        }
+    },
 }
 
 module.exports = HostController;

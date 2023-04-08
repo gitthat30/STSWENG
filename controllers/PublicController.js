@@ -391,6 +391,14 @@ const PublicController = {
             mm = '0' + mm
         }
 
+        if(hr/10 < 1) {
+            hr = '0' + hr
+        }
+
+        if(min/10 < 1) {
+            min = '0' + min
+        }
+
         today = yyyy+'-'+mm+'-'+dd +' ('+hr+':'+min+')';
 
         newaccount = {

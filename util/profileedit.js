@@ -15,9 +15,9 @@ const functions = {
     })
   },
 
-  editProfile: async function(fname, lname, contact, email, username) {
+  editProfile: async function(fname, lname, pos, contact, email, username) {
     await new Promise ((resolve) => {
-      db.updateOne(account, {username: username}, {fname: fname, lname: lname, contact: contact, email: email}, (result) => {
+      db.updateOne(account, {username: username}, {fname: fname, lname: lname, pos: pos, contact: contact, email: email}, (result) => {
         resolve(result)
       })
     })

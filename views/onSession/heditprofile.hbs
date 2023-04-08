@@ -1,0 +1,20 @@
+{{> wrapper_header page_title='Profile'}}
+
+<div class="container contact-container">
+    <left>
+    <p><h2>Basic Information</h2></p>
+    <br>
+    <form action="/hconfirmeditprofile" method="POST">
+        <p><h3>
+            First Name: <input type="text" name="fname" placeholder="FIRST NAME" value="{{fname}}" required> <br> <br>
+            Last Name: <input type="text" name="lname" placeholder="LAST NAME" value="{{lname}}" required> <br> <br>
+            Position: <input type="text" name="pos" placeholder="LAST NAME" value="{{pos}}" required> <br> <br>
+            Email: <input type="email" name="email" placeholder="EMAIL" value="{{email}}" required> <br> <br>
+            Contact Number: <input type="tel" name="contact" size="25" pattern="[0-9]{4}-[0-9]{3}-[0-9]{4}|[0-9]{4}-[0-9]{4}|[0-9]{11}|[0-9]{8}" placeholder="Contact No: 09XXXXXXXXX or 8XXXXXXX" value="{{contact}}" required> <br> <br> <br>
+            <button type="submit" class="global-button">Confirm</button>
+        </h3></p>
+        <br><br>
+    </form>
+</div>
+
+{{> wrapper_footer}}
