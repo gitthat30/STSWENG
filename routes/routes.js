@@ -80,6 +80,9 @@ app.post("/hregisterconfirm", isHost, HostController.registerHost);
 // [HOST] VIEW FEEDBACK 
 app.get("/hviewfeedback", isHost, HostController.viewFeedBack);
 
+// [HOST] VIEW PROFILE
+app.get('/hviewprofile', isHost, HostController.viewProfile);
+
 // [HOST] Customer Estimation Requests
 app.get("/hviewallpending", isHost, HostController.getPendingRequests);
 app.post("/hviewpending", isHost, HostController.viewRequest);

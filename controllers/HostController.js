@@ -332,6 +332,24 @@ const HostController = {
         }
         else {
             //Gets the values entered
+
+            var today = new Date();
+            var dd = today.getDate();
+            var mm = today.getMonth() + 1;
+            var yyyy = today.getFullYear();
+            var hr = today.getHours();
+            var min = today.getMinutes();
+
+            if(dd/10 < 1) {
+                dd = '0' + dd
+            }
+    
+            if(mm/10 < 1) {
+                mm = '0' + mm
+            }    
+
+            today = yyyy+'-'+mm+'-'+dd +' ('+hr+':'+min+')';
+
             newaccount = {
                 fname: req.body.fname.trim(),
                 lname: req.body.lname.trim(),
@@ -340,6 +358,8 @@ const HostController = {
                 questions: null,
                 contact: req.body.contact.trim(),
                 email: req.body.email.trim(),
+                pos: req.body.pos.trim(),
+                registerdate: today,
                 host: true
             }
 
@@ -406,7 +426,65 @@ const HostController = {
                 }
             }) 
         }
-    }
+    },
+
+    viewProfile: async function(req, res) {
+        console.log("Hmmm?")
+        console.log(req.session)
+        notifcount = 0
+        db.findOne(account, {_id: req.session.user}, {}, function(result) {
+            console.log(typeof result.notifications)
+            result.notifications.forEach(n => {
+                if(!n.read)
+                    notifcount++;
+            })
+            
+            if(result.questions[0] != undefined) {
+                object = {
+                    isHost: true, 
+                    username: req.session.name, 
+                    fname: req.session.fname, 
+                    lname: req.session.lname,
+                    pos: result.pos,
+                    registerdate: result.registerdate, 
+                    email: result.email, 
+                    contact: result.contact, 
+                    dq1: "What is your favorite number?", //For ease of rendering
+                    dq2: "What is your mom's maiden name?", 
+                    dq3: "What is your favorite food?",
+                    dq4: "What is the name of your first pet?",
+                    q1: result.questions[0].question, 
+                    q2: result.questions[1].question, 
+                    q3: result.questions[2].question,
+                    a1: result.questions[0].answer, 
+                    a2: result.questions[1].answer, 
+                    a3: result.questions[2].answer,
+                    notifcount
+                }
+            }
+            else {
+                object = {
+                    isHost: false, 
+                    username: req.session.name, 
+                    fname: req.session.fname, 
+                    lname: req.session.lname,
+                    registerdate: result.registerdate, 
+                    email: result.email, 
+                    contact: result.contact
+                }
+            }
+
+            
+
+            if(result.questions[3]) {
+                object.q4 = result.questions[3].question
+                object.a4 = result.questions[3].answer
+            }
+            
+            res.render('./onSession/hviewprofile', object)
+        })
+    },
+
 }
 
 module.exports = HostController;

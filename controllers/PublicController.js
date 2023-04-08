@@ -274,6 +274,23 @@ const PublicController = {
         //Assign answer to third question, then render the next question (if there is one)
          assign = 2;
 
+         var today = new Date();
+         var dd = today.getDate();
+         var mm = today.getMonth() + 1;
+         var yyyy = today.getFullYear();
+         var hr = today.getHours();
+         var min = today.getMinutes();
+
+         if(dd/10 < 1) {
+            dd = '0' + dd
+        }
+
+        if(mm/10 < 1) {
+            mm = '0' + mm
+        }
+
+         today = yyyy+'-'+mm+'-'+dd +' ('+hr+':'+min+')';
+
          //Storing variables.
          newaccount = {
             fname: req.body.fname,
@@ -281,7 +298,8 @@ const PublicController = {
             username: req.body.user,
             password: req.body.pass,
             contact: req.body.con,
-            email: req.body.email
+            email: req.body.email,
+            registerdate: today
          }
  
          questions = []
@@ -357,13 +375,32 @@ const PublicController = {
         //Assign answer to third question, then render the next question (if there is one)
         assign = 3;
         console.log(assign)
+
+        var today = new Date();
+        var dd = today.getDate();
+        var mm = today.getMonth() + 1;
+        var yyyy = today.getFullYear();
+        var hr = today.getHours();
+        var min = today.getMinutes();
+
+        if(dd/10 < 1) {
+            dd = '0' + dd
+        }
+
+        if(mm/10 < 1) {
+            mm = '0' + mm
+        }
+
+        today = yyyy+'-'+mm+'-'+dd +' ('+hr+':'+min+')';
+
         newaccount = {
            fname: req.body.fname,
            lname: req.body.lname,
            username: req.body.user,
            password: req.body.pass,
            contact: req.body.con,
-           email: req.body.email
+           email: req.body.email,
+           registerdate: today
         }
 
         questions = []
