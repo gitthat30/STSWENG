@@ -811,4 +811,13 @@
     border: 1px solid #ADADAD;
 }
 
+.accounts-card {
+    height: 100px;
+    width: 1076px;
+    margin-bottom: 5px;
+    background: #F1F1F1;
+    border: 1px solid black;
+    border-radius: 10px;
+}
+
 /* End of New Job page */

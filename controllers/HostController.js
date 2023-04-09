@@ -312,7 +312,7 @@ const HostController = {
                 var client = result.username;
                 var carModel = result.car;
                 var jobType = result.type;
-                res.render ('./onSession/hviewfeedback', {isHost: false, feedbackcard: AllFeedBack, id:request_id, car: carModel, Type: jobType, client: client});
+                res.render ('./onSession/hviewfeedback', {isHost: true, feedbackcard: AllFeedBack, id:request_id, car: carModel, Type: jobType, client: client});
             })
         })
     },
@@ -598,6 +598,35 @@ const HostController = {
             res.redirect('/hviewprofile')
         }
     },
+
+    manageUsers: function(req, res) {
+        var projection = "_id fname lname username host"
+        db.findMany(account, {}, projection, function(result){
+            var userAccounts = []
+            const data = result;
+            data.forEach((i) => {
+                if (!i.host)
+                    userAccounts.push({id: i._id, fname: i.fname, lname: i.lname, username: i.username})
+            })
+            console.log(userAccounts);
+            res.render ('./onSession/hmanageusers', {isHost: true, accountCard: userAccounts});
+        })
+
+    },
+
+    viewUserProfile: function(req, res) {
+        var userID = req.params.id
+        db.findOne (account, {_id:userID}, "fname lname", function(result){
+            res.render ("./onSession/hviewUser", {isHost: true, id: userID, fname: result.fname, lname: result.lname})
+        })
+    },
+
+    terminateAccount: function(req, res) {
+        var userID = req.query.id
+        console.log(userID);
+        db.deleteOne(account, {_id: userID}, function(){
+        })
+    }
 }
 
 module.exports = HostController;

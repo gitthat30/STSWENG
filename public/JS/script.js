@@ -462,6 +462,17 @@ $('.Enter_Feedback_Host').click(function(){
     })
 })
 
+$('.view-userButton').click(function(){
+    var userID = $(this).attr("value");
+    console.log("Clicked");
+    console.log(userID);
+    location.href = "/hviewUserProfile/" + userID
+})
+
+$('.Terminate-User').click(function(){
+    var userID = this.id;
+    $.get('/hterminate', {id: userID},function(){})
+})
 
 
 

@@ -112,4 +112,9 @@ app.get("/viewsuppliers", isHost, HostController.viewSuppliers);
 //[HOST] View Notifications
 app.get("/hviewnotifications", isHost, HostController.viewNotifications); 
 
+//[HOST] MANAGE USERS
+app.get("/hmanageusers", isHost, HostController.manageUsers);
+app.get("/hviewUserProfile/:id", isHost, HostController.viewUserProfile);
+app.get("/hterminate", isHost, HostController.terminateAccount);
+
 module.exports = app;
