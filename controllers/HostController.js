@@ -601,14 +601,22 @@ const HostController = {
 
     manageUsers: function(req, res) {
         var projection = "_id fname lname username host"
+        var activeUser = req.session.name
+        if (activeUser == "HOST")
+            console.log(activeUser)
         db.findMany(account, {}, projection, function(result){
             var userAccounts = []
             const data = result;
             data.forEach((i) => {
-                if (!i.host)
+                if (activeUser == "HOST"){
+                    if (i.username != "HOST")
                     userAccounts.push({id: i._id, fname: i.fname, lname: i.lname, username: i.username})
+                }
+                else{
+                    if (!i.host)
+                        userAccounts.push({id: i._id, fname: i.fname, lname: i.lname, username: i.username})
+                }
             })
-            console.log(userAccounts);
             res.render ('./onSession/hmanageusers', {isHost: true, accountCard: userAccounts});
         })
 
@@ -616,8 +624,19 @@ const HostController = {
 
     viewUserProfile: function(req, res) {
         var userID = req.params.id
-        db.findOne (account, {_id:userID}, "fname lname", function(result){
-            res.render ("./onSession/hviewUser", {isHost: true, id: userID, fname: result.fname, lname: result.lname})
+        var projection = " car type username price paid outstanding"
+        db.findOne (account, {_id:userID}, "fname lname username email contact", function(result){
+            const user = result;
+            db.findMany (request, {userid: userID}, projection, function(result){
+                var details = []
+                const data = result;
+                data.forEach((i) => {
+                    details.push({car: i.car, type: i.type, username: i.username, price: i.price, paid: i.paid, outstanding: i.outstanding});
+
+                })
+                res.render ("./onSession/hviewUser", {isHost: true, id: userID, fname: user.fname, lname: user.lname,username: user.username, email: user.email, number: user.contact, Req_History: details});
+            })
+            
         })
     },
 

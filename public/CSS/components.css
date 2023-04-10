@@ -820,4 +820,51 @@
     border-radius: 10px;
 }
 
+.User-Container {
+    position: sticky;
+    left: 3px;
+    width: 300px;
+    font-style: normal;
+    font-weight: 700;
+}
+
+.contact-Label{
+    background: grey;
+    
+}
+
+.contact-container{
+    background: #D9D9D9;
+    text-align: center;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.Request-History {
+    position: absolute;
+    top: 168px;
+    left: 120px;
+    width: 100%;
+}
+
+.Req_History_Card{
+    border: 1px solid black;
+    border-radius: 10px;
+    width: 60%;
+    margin-bottom: 10px;
+    align-content: center;
+    background-color: #D9D9D9
+}
+
+.req_text{
+    text-align: center;
+}
+
+#req_model {
+    font-family: 'Hind Mysuru';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 32px;
+    line-height: 55px;
+}
 /* End of New Job page */
