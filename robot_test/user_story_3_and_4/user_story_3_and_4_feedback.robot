@@ -21,8 +21,9 @@ Straight To Ongoing Jobs
 User Send Feedback
     [Arguments]     ${feedback}
     Click Button    xpath=//button[@class="SendFeedback"]
-    Input Text      xpath=//input[@id="Feedback_box"]    ${feedback}
-    Press Keys      None    ENTER
+    Input Text      xpath=//input[@class="Feedback_box"]    ${feedback}
+    Click Button    xpath=//button[@class="Enter_Feedback"]
+    #Press Keys      None    ENTER
     Reload Page
 
 Sign-out
@@ -36,13 +37,14 @@ Straight To Active Jobs
 
 Host Send Feedback
     [Arguments]     ${feedback}
-    Click Button    //button[contains(text(),'Feedback')]
-    Input Text      xpath=//input[@id="Feedback_box"]    ${feedback}
-    Press Keys      None    ENTER
+    Click Button    xpath=//button[@value="640b121dba3df413da2731bc"]
+    Input Text      xpath=//input[@class="Feedback_box"]    ${feedback}
+    Click Button    xpath=//button[@class="Enter_Feedback_Host"]
+    #Press Keys      None    ENTER
     Reload Page
 
 ***Test Cases***
-User Sends Feedback
+0301 - User Sends Feedback
     Open Browser to Login Page
     Straight To Ongoing Jobs    ${USER USERNAME}    ${USER PASSWORD}
     User Send Feedback    ${USER FEEDBACK}
@@ -50,7 +52,7 @@ User Sends Feedback
     Sign-out
     [Teardown]    Close Browser 
 
-Host Sends Feedback
+0401 - Host Sends Feedback
     Open Browser to Login Page
     Straight To Active Jobs    ${HOST USERNAME}    ${HOST PASSWORD}
     Host Send Feedback    ${HOST FEEDBACK}

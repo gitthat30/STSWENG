@@ -16,15 +16,15 @@ ${VALID PASSWORD}    newpass777
 ${VALID HOSTUSER}     HOST
 ${VALID HOSTPASS}    1234567890
 
-***Test Cases***                 USERNAME         PASSWORD
-Invalid Username                 angelo           ${VALID PASSWORD}
-Invalid Password 1               ${VALID USER}    newpass12
-Invalid Password 2               ${VALID USER}    newpass1234
-Invalid Password 3               ${VALID USER}    Newpass12
-Invalid Username And Password    invalid          whatever
-Empty Username                   ${EMPTY}         ${VALID PASSWORD}
-Empty Password                   ${VALID USER}    ${EMPTY}
-Empty Username And Password      ${EMPTY}         ${EMPTY}
+***Test Cases***                        USERNAME         PASSWORD
+0206 - Invalid Username                 angelo           ${VALID PASSWORD}
+0207 - Invalid Password 1               ${VALID USER}    newpass12
+0208 - Invalid Password 2               ${VALID USER}    newpass1234
+0209 - Invalid Password 3               ${VALID USER}    Newpass12
+0210 - Invalid Username And Password    invalid          whatever
+0211 - Empty Username                   ${EMPTY}         ${VALID PASSWORD}
+0212 - Empty Password                   ${VALID USER}    ${EMPTY}
+0213 - Empty Username And Password      ${EMPTY}         ${EMPTY}
 
 ***Keywords***
 Login With Invalid Credentials Should Fail

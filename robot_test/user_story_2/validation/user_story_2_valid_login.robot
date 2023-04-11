@@ -20,13 +20,13 @@ Check Successful Login
     Check Homepage
 
 ***Test Cases***
-Valid User Login
+0214 - Valid User Login
     Open Browser to Login Page
     Check Successful Login    ${USER USERNAME}    ${USER PASSWORD}
     User Successful Login
     [Teardown]    Close Browser
 
-Valid Host Login
+0215 - Valid Host Login
     Open Browser to Login Page
     Check Successful Login    ${HOST USERNAME}    ${HOST PASSWORD}
     Host Successful Login

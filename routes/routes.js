@@ -81,6 +81,13 @@ app.post("/hregisterconfirm", isHost, HostController.registerHost);
 app.post("/hviewfeedback", isHost, HostController.viewFeedBack);
 app.get("/henterFeedback", isHost, HostController.enterFeedback);
 
+// [HOST] VIEW PROFILE
+app.get('/hviewprofile', isHost, HostController.hviewProfile);
+
+// [HOST] EDIT PROFILE
+app.get('/heditprofile', isPrivate, HostController.heditProfile);
+app.post('/hconfirmeditprofile', isPrivate, HostController.hconfirmeditProfile);
+
 // [HOST] Customer Estimation Requests
 app.get("/hviewallpending", isHost, HostController.getPendingRequests);
 app.post("/hviewpending", isHost, HostController.viewRequest);
@@ -104,5 +111,10 @@ app.get("/viewsuppliers", isHost, HostController.viewSuppliers);
 
 //[HOST] View Notifications
 app.get("/hviewnotifications", isHost, HostController.viewNotifications); 
+
+//[HOST] MANAGE USERS
+app.get("/hmanageusers", isHost, HostController.manageUsers);
+app.get("/hviewUserProfile/:id", isHost, HostController.viewUserProfile);
+app.get("/hterminate", isHost, HostController.terminateAccount);
 
 module.exports = app;

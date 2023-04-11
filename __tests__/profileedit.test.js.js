@@ -57,7 +57,7 @@ beforeAll(async () => {
   await profile.changePass("newpass", testuser)
 
   //Change Profile Fields
-  await profile.editProfile("nFirst", "nLast", "n123", "a@t", testuser)
+  await profile.editProfile("nFirst", "nLast", null, "n123", "a@t", testuser)
 
   //Change Security Questions
   await profile.editQuestions("4", "3", "2", "1", "a4", "a3", "a2", "a1", testuser)

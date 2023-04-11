@@ -70,13 +70,13 @@ Change Everything
     Sign-out
 
 ***Test Cases***
-Before Test Cases
+0200 - Before Test Cases
     Straight To View Profile    ${USERNAME}    ${CHANGE PASS}
     Edit Profile
     Change Everything
     [Teardown]    Close Browser
 
-Change User First Name
+0201 - Change User First Name
     Straight To View Profile    ${USERNAME}    ${OLD PASS}
     Edit Profile
     First Name    ${FNAME}
@@ -84,7 +84,7 @@ Change User First Name
     Sleep             1
     [Teardown]    Close Browser
 
-Change User Last Name
+0202 - Change User Last Name
     Straight To View Profile    ${USERNAME}    ${OLD PASS}
     Edit Profile
     Last Name    ${LNAME}
@@ -92,7 +92,7 @@ Change User Last Name
     Sleep             1
     [Teardown]    Close Browser 
 
-Change User Email
+0203 - Change User Email
     Straight To View Profile    ${USERNAME}    ${OLD PASS}
     Edit Profile
     Email    ${EMAIL}
@@ -100,7 +100,7 @@ Change User Email
     Sleep             1
     [Teardown]    Close Browser 
 
-Change User Contact Number
+0204 - Change User Contact Number
     Straight To View Profile    ${USERNAME}    ${OLD PASS}
     Edit Profile
     Contact Number    ${CONTACT}
@@ -108,7 +108,7 @@ Change User Contact Number
     Sleep             1
     [Teardown]    Close Browser 
 
-Change Password And Login
+0205 - Change Password And Login
     Straight To View Profile    ${USERNAME}    ${OLD PASS}
     Password   ${CHANGE PASS}
     Sign-out

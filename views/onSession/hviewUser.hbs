@@ -1,0 +1,17 @@
+{{> wrapper_header page_title='Manage User Accounts'}}
+<div class="container User-Container">
+    <p>{{fname}} {{lname}}</p>
+    <p>Username: {{username}}</p>
+    <div class="contact-container">
+        <p class="contact-Label">Contact Details</p>
+        <p> {{email}}</p>
+        <p> {{number}}</p>
+    </div>
+    <a href="/hmanageusers"><button id= {{id}} class="global-button Terminate-User">Terminate Account</button></a>
+</div>
+<div class="container Request-History">
+    {{#each Req_History}}
+        {{>Req_History}}
+    {{/each}}
+</div>
+{{> wrapper_footer}}

@@ -95,20 +95,20 @@ User Login After Account Delete
     Submit Credentials
 
 ***Test Cases***
-Before Test Cases
+0500 - Before Test Cases
     Open Browser to Login Page
     Create New Account
     Register
     Sleep    3
     [Teardown]    Close Browser 
 
-User Does Not Delete Account
+0501 - User Does Not Delete Account
     Open Browser to Login Page
     Straight To View Profile
     Account Not Deleted
     [Teardown]    Close Browser 
 
-User Delete Account
+0502 - User Delete Account
     Open Browser to Login Page
     Straight To View Profile
     Account Delete

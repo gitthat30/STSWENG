@@ -686,7 +686,8 @@ const UserController = {
                 isHost: false, 
                 username: req.session.name, 
                 fname: req.session.fname, 
-                lname: req.session.lname, 
+                lname: req.session.lname,
+                registerdate: result.registerdate, 
                 email: result.email, 
                 contact: result.contact, 
                 dq1: "What is your favorite number?", //For ease of rendering
