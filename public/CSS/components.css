@@ -808,7 +808,9 @@
 
 .feedback {
     width: 1076px;
+    margin-bottom: 10px;
     border: 1px solid #ADADAD;
+    border-radius: 5px;
 }
 
 .accounts-card {
