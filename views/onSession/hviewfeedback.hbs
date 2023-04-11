@@ -15,8 +15,9 @@
     </div>
     <br>
     <input type="Text" class="Feedback_box" placeholder="Add Feedback">
-
-    <button class="Enter_Feedback_Host" id={{id}}>Send</button>
+    <form action="/hviewfeedback" method="POST">
+        <button name="request_id" value={{id}} class="Enter_Feedback_Host" id={{id}}>Send</button>
+    </form>
 </div>
 
 {{> wrapper_footer}}

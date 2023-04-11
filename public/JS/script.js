@@ -458,7 +458,6 @@ $('.Enter_Feedback_Host').click(function(){
     var request_id = this.id;
     var userFeedback = $('.Feedback_box').val();
     $.get('/henterFeedback', {request: request_id, feedback: userFeedback}, function(){
-        location.reload()
     })
 })
 

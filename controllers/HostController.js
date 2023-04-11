@@ -331,7 +331,6 @@ const HostController = {
         console.log(newFeedback);
         db.insertOne(feedback, newFeedback, function(){
             console.log("Successful Add")
-            res.redirect('./onSession/uviewfeedback')
         })
 
     },
