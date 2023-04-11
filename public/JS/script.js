@@ -216,6 +216,166 @@ $('#edit-btn').click(function() {
 });
 /* End of add photos */
 
+$('#change-btn').click(function() {
+    console.log( $(event.currentTarget).closest('body').find('#password-change'))
+    $(event.currentTarget).closest('body').find('#password-change').html('<form action="/confirmPass" method="POST" id="pass-form">' + 
+    '<br>' + 
+    '<div class="error-msg"></div>' +
+        'New Password:      <input type="password" name="newpass" id="newpass" required><br><br>' + 
+        'Validate Password: <input type="password" name="valpass" id="valpass" required><br><br>' + 
+    '</form>' +
+    '<button type = "button" class="global-button" id="cancel-btn">Cancel</button> <button type = "button" class="global-button" id="confpass-btn">Confirm</button>')
+});
+
+$('#password-change').on("click", "#cancel-btn", (function() {
+    console.log("Test")
+    console.log($(event.currentTarget).closest('body').find('#newpass'))
+    
+    $(event.currentTarget).closest('body').find('#password-change').html('')
+}));
+
+$('#password-change').on("click", "#confpass-btn", (function() {
+    console.log("Test")
+    console.log( $(event.currentTarget).closest('body').find('#password-change'))
+    if (!$(event.currentTarget).closest('body').find('#newpass').val() || !$(event.currentTarget).closest('body').find('#valpass').val() )
+        $(event.currentTarget).closest('body').find('.error-msg').html("Please make sure fill out both fields.")
+    else if ($(event.currentTarget).closest('body').find('#newpass').val() != $(event.currentTarget).closest('body').find('#valpass').val())
+        $(event.currentTarget).closest('body').find('.error-msg').html("Please make sure both passwords entered are the same.")
+    else
+        $(event.currentTarget).closest('body').find('#pass-form').submit()
+}));
+/* End of change password */
+
+$('#del-btn').click(function () {
+    $('#delete-account').html(
+        "Are you sure you want to delete your account?<br><br>" +
+        "<button id = 'con-del' class='global-button' onclick=" + '"' + "window.location='/deleteaccount'" + '"> Yes </button>' + " " + '<button id="rej-del" class="global-button" id="del-btn">No</button>'
+    )
+})
+$('#delete-account').on("click", "#rej-del", (function () {
+    console.log("test")
+    $('#delete-account').html('')
+}));
+/* End of delete account */
+
+
+$('body').on("click", "#add-que", () => {
+    $('#4th-que').html(
+        '<p><h3>Security Question 4: ' +
+        '<select name="q4">' +
+            '<option>What is your favorite number?</option>' +
+            "<option>What is your mom's maiden name?</option>" +
+            '<option>What is your favorite food?</option>' +
+            '<option selected>What is the name of your first pet?</option>' +
+        '</select>' +
+        '<br><br>' +
+        'Answer: <input type="text" name="a4" required>' +
+        '<br><br></h3></p>' +
+        '<button class="global-button" id="rem-que">Remove Fourth Question</button></h3></p>'
+    )
+})
+
+$('body').on("click", "#rem-que", () => {
+    $('#def-que').html(
+        '<p><h3>Security Question 1: ' +
+        '<select name="q1">' +
+            '<option>What is your favorite number?</option>' +
+            "<option>What is your mom's maiden name?</option>" +
+            '<option>What is your favorite food?</option>' +
+            '<option>What is the name of your first pet?</option>' +
+        '</select>' +
+        '<br><br>' +
+        'Answer: <input type="text" name="a1" required>' +
+        '<br><br>' +
+
+        'Security Question 2: ' +
+        '<select name="q2">' +
+            '<option>What is your favorite number?</option>' +
+            "<option selected>What is your mom's maiden name?</option>" +
+            '<option>What is your favorite food?</option>' +
+'<option>What is the name of your first pet?</option>' +
+        '</select>' +
+        '<br><br>' +
+        'Answer: <input type="text" name="a2" required>' +
+        '<br><br>' +
+
+        'Security Question 3: ' +
+        '<select name="q3">' +
+            '<option>What is your favorite number?</option>' +
+            "<option>What is your mom's maiden name?</option>" +
+            '<option selected>What is your favorite food?</option>' +
+            '<option>What is the name of your first pet?</option>' +
+        '</select>' +
+        '<br><br>' +
+        'Answer: <input type="text" name="a3" required>' +
+        '<br><br>' +
+    '</h3></p>' +
+
+    '<div id="4th-que">' +
+        '<button class="global-button" id="add-que">Add Fourth Question</button></h3></p>' +
+    '</div>'
+    )
+})
+/* End of Edit Security Questions */
+
+/*Start of Host Register */
+$('body').on("click", "#hadd-que", () => {
+    $('#4th-que').html(
+        '<p>Security Question 4: ' +
+        '<select name="q4">' +
+            '<option>What is your favorite number?</option>' +
+            "<option>What is your mom's maiden name?</option>" +
+            '<option>What is your favorite food?</option>' +
+            '<option selected>What is the name of your first pet?</option>' +
+        '</select>' +
+        '<br><br>' +
+        'Answer: <input type="text" name="a4" required>' +
+        '<br><br>' +
+        '<button class="global-button" id="hrem-que">Remove Fourth Question</button></p>'
+    )
+})
+
+$('body').on("click", "#hrem-que", () => {
+    $('#hsec-que').html(
+        '<p>Security Question 1: ' +
+        '<select name="q1">' +
+            '<option>What is your favorite number?</option>' +
+            "<option>What is your mom's maiden name?</option>" +
+            '<option>What is your favorite food?</option>' +
+            '<option>What is the name of your first pet?</option>' +
+        '</select>' +
+        '<br><br>' +
+        'Answer: <input type="text" name="a1" required>' +
+        '<br><br>' +
+
+        'Security Question 2: ' +
+        '<select name="q2">' +
+            '<option>What is your favorite number?</option>' +
+            "<option selected>What is your mom's maiden name?</option>" +
+            '<option>What is your favorite food?</option>' +
+'<option>What is the name of your first pet?</option>' +
+        '</select>' +
+        '<br><br>' +
+        'Answer: <input type="text" name="a2" required>' +
+        '<br><br>' +
+
+        'Security Question 3: ' +
+        '<select name="q3">' +
+            '<option>What is your favorite number?</option>' +
+            "<option>What is your mom's maiden name?</option>" +
+            '<option selected>What is your favorite food?</option>' +
+            '<option>What is the name of your first pet?</option>' +
+        '</select>' +
+        '<br><br>' +
+        'Answer: <input type="text" name="a3" required>' +
+        '<br><br>' +
+    '</h3></p>' +
+
+    '<div id="4th-que">' +
+        '<button class="global-button" id="hadd-que">Add Fourth Question</button></p>' +
+    '</div>'
+    )
+})
 
 /* Register form validation */
 $('form[action="/registeruser"] input[name="name"], form[action="/registeruser"] input[name="pass"]').on('input', function() {
@@ -257,6 +417,10 @@ $('.edit-balance-button').click(function() {
     $(this).siblings('.edit-outstanding').show();
 });
 
+$('.replyFeedback').click(function(){
+    $(this).siblings('.hostReply').show()
+})
+
 $('.cancel-edit-balance').click(function() {
     $(this).parent().hide();
     $(this).parent().siblings('.settle').show();
@@ -265,4 +429,50 @@ $('.cancel-edit-balance').click(function() {
     $(this).parent().parent().siblings('.active-host-card-bottom').find('.add-field').prop('disabled', false);
     $(this).parent().parent().siblings('.active-host-card-bottom').find('.add-field').css('background-color', 'white')
 });
+
+$('.SendFeedback').click(function(){
+    var Request_id = $(this).attr('id');
+    console.log(Request_id);
+    location.href="/uviewfeedback/"+Request_id;
+});
+
+/*$('.Feedback_box').keypress(function(event){
+    var request_id = this.id;
+    var userFeedback = $('.Feedback_box').val();
+    var keycode = (event.keycode ? event.keycode : event.which);
+    if (keycode == '13'){
+        $.get('/enterFeedback', {request: request_id , feedback: userFeedback}, function(){
+            console.log(userFeedback);
+        })
+    }
+}); */ 
+
+$('.Enter_Feedback').click(function(){
+    var request_id = this.id;
+    var userFeedback = $('.Feedback_box').val();
+    $.get('/enterFeedback', {request: request_id, feedback: userFeedback}, function(){ 
+    })
+})
+
+$('.Enter_Feedback_Host').click(function(){
+    var request_id = this.id;
+    var userFeedback = $('.Feedback_box').val();
+    $.get('/henterFeedback', {request: request_id, feedback: userFeedback}, function(){
+    })
+})
+
+$('.view-userButton').click(function(){
+    var userID = $(this).attr("value");
+    console.log("Clicked");
+    console.log(userID);
+    location.href = "/hviewUserProfile/" + userID
+})
+
+$('.Terminate-User').click(function(){
+    var userID = this.id;
+    $.get('/hterminate', {id: userID},function(){})
+})
+
+
+
 /* End of edit balance */

@@ -1,0 +1,58 @@
+{{> wrapper_header page_title='Profile'}}
+
+<div class="container contact-container">
+    <left>
+    <p class="error-msg">{{error_msg}}</p>
+    <div id="gray-box">
+        <p><h2>Basic Information</h2></p>
+        <br>
+        <p><h4>First Name: {{fname}}</h4></p>
+        <p><h4>Last Name: {{lname}}</h4></p>
+        <p><h4>Position: {{pos}}</h4></p>
+        <p><h4>Email: {{email}}</h4></p>
+        <p><h4>Contact Number: {{contact}}</h4></p><br>
+        <p><h5>Registered Since: {{registerdate}}</h5></p>
+    </div>
+    <button onclick="window.location='/heditprofile'" class="global-button">Edit Profile</button>            <button class="global-button" id="del-btn">Delete Account</button></h3></p>
+    <br>
+    <div id="delete-account">
+        
+    </div>
+    <br><br>
+    <div id="gray-box">
+        <p><h3>Account Security</h3></p>
+        <br>
+        <p><h4>Current Password: ************   <button type = "button" class="global-button" id="change-btn">Change Password</button></h4></p>
+        <div id="password-change">
+            
+        </div>
+        <br>
+        {{#if (Equal q1 null)}}
+        {{else}}
+            <div id="sec-que">
+                <p><h4>
+                Security Question 1: {{q1}}<br>
+                Answer: {{a1}}<br><br>
+                Security Question 2: {{q2}}<br>
+                Answer: {{a2}}<br><br>
+                Security Question 3: {{q3}}<br>
+                Answer: {{a3}}<br><br>
+                </h4></p>
+                {{#if a4}}
+                    <p><h4>
+                        Security Question 4: {{q4}}<br>
+                        Answer: {{a4}}<br><br>
+                    </h4></p>
+                {{/if}}
+                <button onclick="window.location='/editquestions'" class="global-button" id="edi-sec">Edit Security Questions</button></h4></p>
+            </div>
+        {{/if}}
+    </div>
+
+     
+        </form>
+    <br>
+    
+</div>
+
+{{> wrapper_footer}}

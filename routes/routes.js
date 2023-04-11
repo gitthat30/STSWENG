@@ -39,6 +39,15 @@ app.get('/logout', isPrivate, UserController.logoutUser);
 app.post("/sendmessage", isPrivate, UserController.sendMessage);
 app.post('/downloadFile', isPrivate, UserController.download);
 
+// [CLIENT] Profile View
+app.get('/uviewprofile', isPrivate, UserController.viewProfile);
+app.post('/confirmPass', isPrivate, UserController.confirmPassword);
+app.get('/editprofile', isPrivate, UserController.editProfile);
+app.get('/editquestions', isPrivate, UserController.editQuestions);
+app.post('/confirmquestions', isPrivate, UserController.confirmQuestions);
+app.post('/confirmeditprofile', isPrivate, UserController.confirmeditProfile);
+app.get('/deleteaccount', isPrivate, UserController.deleteAccount);
+
 // [CLIENT] Create Estimation Request
 app.get("/createreq", isPrivate, UserController.getUserRequestCreation);
 app.post("/submitreq", isPrivate, UserController.submitRequest);
@@ -59,6 +68,25 @@ app.get("/uviewnotifications", isPrivate, UserController.viewNotifications);
 
 // [CLIENT] View Contact
 app.get("/uviewcontact", isPrivate, UserController.viewContact);
+
+// [CLIENT] VIEW FEEDBACK
+app.get("/enterFeedback", isPrivate, UserController.enterFeedback);
+app.get("/uviewfeedback/:id", isPrivate, UserController.viewFeedBack);
+
+// [HOST] CREATE HOST ACCOUNT
+app.get("/hregister", isHost, HostController.newHost);
+app.post("/hregisterconfirm", isHost, HostController.registerHost);
+
+// [HOST] VIEW FEEDBACK 
+app.post("/hviewfeedback", isHost, HostController.viewFeedBack);
+app.get("/henterFeedback", isHost, HostController.enterFeedback);
+
+// [HOST] VIEW PROFILE
+app.get('/hviewprofile', isHost, HostController.hviewProfile);
+
+// [HOST] EDIT PROFILE
+app.get('/heditprofile', isPrivate, HostController.heditProfile);
+app.post('/hconfirmeditprofile', isPrivate, HostController.hconfirmeditProfile);
 
 // [HOST] Customer Estimation Requests
 app.get("/hviewallpending", isHost, HostController.getPendingRequests);
@@ -83,5 +111,10 @@ app.get("/viewsuppliers", isHost, HostController.viewSuppliers);
 
 //[HOST] View Notifications
 app.get("/hviewnotifications", isHost, HostController.viewNotifications); 
+
+//[HOST] MANAGE USERS
+app.get("/hmanageusers", isHost, HostController.manageUsers);
+app.get("/hviewUserProfile/:id", isHost, HostController.viewUserProfile);
+app.get("/hterminate", isHost, HostController.terminateAccount);
 
 module.exports = app;

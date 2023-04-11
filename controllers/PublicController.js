@@ -61,7 +61,7 @@ const PublicController = {
         var user = req.body.name;
         var pass = req.body.pass;
 
-
+        console.log("Here")
         //Finds the username entered in the db, checks the password entered if it matches the one in the DB, then logs the user in if they match.
         dbquery = await new Promise((resolve, reject) => {
             db.findOne(account, {username: user}, {}, (result) => {
@@ -70,28 +70,40 @@ const PublicController = {
                 else
                     resolve(result)
             })
+        }).catch(() => {
+            console.log("error")
         })
-        test = await new Promise((resolve) => {
-            resolve(bcrypt.compare(pass, dbquery.password));
-        })
-        console.log("hash comparison =", test)
-        if(test) {
-            req.session.user = dbquery._id;
-            req.session.name = dbquery.username;
-            req.session.fname = dbquery.fname;
-            req.session.lname = dbquery.lname;
-            req.session.host = dbquery.host;
-            req.session.contact = dbquery.contact;
-            console.log(req.session);
-
-            if(result.host)
-                res.redirect('/hhome');
-            else 
-                res.redirect('/home');
+        
+        if(!dbquery) {
+            req.flash('error_msg', 'User not found.');   
+            res.redirect('/login');
         }
         else {
-            req.flash('error_msg', 'Incorrect password.');   
-            res.redirect('/login');
+            console.log("Here2")
+            test = await new Promise((resolve) => {
+                resolve(bcrypt.compare(pass, dbquery.password));
+            })
+
+
+            console.log("hash comparison =", test)
+            if(test) {
+                req.session.user = dbquery._id;
+                req.session.name = dbquery.username;
+                req.session.fname = dbquery.fname;
+                req.session.lname = dbquery.lname;
+                req.session.host = dbquery.host;
+                req.session.contact = dbquery.contact;
+                console.log(req.session);
+
+                if(result.host)
+                    res.redirect('/hhome');
+                else 
+                    res.redirect('/home');
+            }
+            else {
+                req.flash('error_msg', 'User Credentials entered wrong.');   
+                res.redirect('/login');
+            }
         }
     },
 
@@ -262,6 +274,23 @@ const PublicController = {
         //Assign answer to third question, then render the next question (if there is one)
          assign = 2;
 
+         var today = new Date();
+         var dd = today.getDate();
+         var mm = today.getMonth() + 1;
+         var yyyy = today.getFullYear();
+         var hr = today.getHours();
+         var min = today.getMinutes();
+
+         if(dd/10 < 1) {
+            dd = '0' + dd
+        }
+
+        if(mm/10 < 1) {
+            mm = '0' + mm
+        }
+
+         today = yyyy+'-'+mm+'-'+dd +' ('+hr+':'+min+')';
+
          //Storing variables.
          newaccount = {
             fname: req.body.fname,
@@ -269,7 +298,8 @@ const PublicController = {
             username: req.body.user,
             password: req.body.pass,
             contact: req.body.con,
-            email: req.body.email
+            email: req.body.email,
+            registerdate: today
          }
  
          questions = []
@@ -345,13 +375,40 @@ const PublicController = {
         //Assign answer to third question, then render the next question (if there is one)
         assign = 3;
         console.log(assign)
+
+        var today = new Date();
+        var dd = today.getDate();
+        var mm = today.getMonth() + 1;
+        var yyyy = today.getFullYear();
+        var hr = today.getHours();
+        var min = today.getMinutes();
+
+        if(dd/10 < 1) {
+            dd = '0' + dd
+        }
+
+        if(mm/10 < 1) {
+            mm = '0' + mm
+        }
+
+        if(hr/10 < 1) {
+            hr = '0' + hr
+        }
+
+        if(min/10 < 1) {
+            min = '0' + min
+        }
+
+        today = yyyy+'-'+mm+'-'+dd +' ('+hr+':'+min+')';
+
         newaccount = {
            fname: req.body.fname,
            lname: req.body.lname,
            username: req.body.user,
            password: req.body.pass,
            contact: req.body.con,
-           email: req.body.email
+           email: req.body.email,
+           registerdate: today
         }
 
         questions = []

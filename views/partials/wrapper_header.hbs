@@ -3,6 +3,7 @@
 	<head>
 		<title>AutoWorks</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<base href="/">
 		<link rel="preconnect" href="https://fonts.googleapis.com">
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 		<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&family=Open+Sans:wght@500&family=Roboto:wght@700&display=swap" rel="stylesheet">
@@ -38,12 +39,19 @@
 				{{/if}}
 					<img src="IMAGES/close.png" alt="close icon" id="close-icon">
 					{{#if isHost}}
+						{{#if (Equal username "HOST")}}
+						{{else}}
+							<a href = "/hviewprofile" class="nav-list-item"><div><p>VIEW PROFILE</p><img src="IMAGES/right-arrow.png" alt="arrow"></div></a>
+						{{/if}}
 					<a href = "/hviewallpending" class="nav-list-item"><div><p>CUSTOMER REQUESTS</p><img src="IMAGES/right-arrow.png" alt="arrow"></div></a>
 					<a href = "/hviewactive" class="nav-list-item"><div><p>ACTIVE JOBS</p><img src="IMAGES/right-arrow.png" alt="arrow"></div></a>
 					<a href = "/viewgeneratereport" class="nav-list-item"><div><p>GENERATE REPORT</p><img src="IMAGES/right-arrow.png" alt="arrow"></div></a>
 					<a href = "/viewsuppliers" class="nav-list-item"><div><p>SUPPLIERS</p><img src="IMAGES/right-arrow.png" alt="arrow"></div></a>
 					<a href = "/hviewnotifications" class="nav-list-item"><div><p>NOTIFICATIONS {{#if notifcount}} ({{notifcount}}) {{/if}}</p><img src="IMAGES/right-arrow.png" alt="arrow"></div></a>
+					<a href = "/hregister" class="nav-list-item"><div><p>NEW HOST</p><img src="IMAGES/right-arrow.png" alt="arrow"></div></a>
+					<a href = "/hmanageusers" class="nav-list-item"><div><p>Manage Users</p><img src="IMAGES/right-arrow.png" alt="arrow"></div></a>
 					{{else}}
+					<a href = "/uviewprofile" class="nav-list-item"><div><p>VIEW PROFILE</p><img src="IMAGES/right-arrow.png" alt="arrow"></div></a>
 					<a href = "/createreq" class="nav-list-item"><div><p>CREATE REQUEST</p><img src="IMAGES/right-arrow.png" alt="arrow"></div></a>
 					<a href = "/uviewallpending" class="nav-list-item"><div><p>PENDING REQUESTS</p><img src="IMAGES/right-arrow.png" alt="arrow"></div></a>
 					<a href = "/uviewactive" class="nav-list-item"><div><p>ONGOING JOBS</p><img src="IMAGES/right-arrow.png" alt="arrow"></div></a>

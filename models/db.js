@@ -10,8 +10,12 @@ const options = {
 
 const database = {
 
+    disconnect: function () {
+        mongoose.disconnect()
+    },
+
     connect: function () {
-        mongoose.connect(url, options, function(error) {
+        mongoose.connect(url, options, async function(error) {
             if(error) throw error;
             console.log('Connected to: ' + url);
         });
