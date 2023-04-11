@@ -839,7 +839,7 @@ const UserController = {
             }
             else {
                 console.log("Confirmedit")
-                await profile.editProfile(req.body.fname, req.body.lname, req.body.contact, req.body.email, req.session.name)
+                await profile.editProfile(req.body.fname, req.body.lname, null, req.body.contact, req.body.email, req.session.name)
                 await console.log("Finished Edit")
     
                 console.log("After edit")
@@ -858,7 +858,7 @@ const UserController = {
         }
         else {
             console.log("Confirmedit")
-            await profile.editProfile(req.body.fname, req.body.lname, req.body.contact, req.body.email, req.session.name)
+            await profile.editProfile(req.body.fname, req.body.lname, null, req.body.contact, req.body.email, req.session.name)
             await console.log("Finished Edit")
 
             console.log("After edit")
